@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       [name.trim(), email.trim(), business.trim(), message.trim()]
     );
     return res.status(200).json({ success: true });
-  } } catch (e) {
+  } catch (e) {
   return res.status(500).json({
     message: "DB error",
     detail: e.message,
@@ -22,4 +22,5 @@ export default async function handler(req, res) {
 }
 
 }
+
 
