@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>VentesPro — Prévision &amp; Analyse Intelligente des Ventes</title>
+<meta content="VentesPro est une plateforme intelligente de prévision et d’analyse des ventes basée sur l’IA et le Machine Learning." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet">
+</link></head>
+<body>
+<!-- Cursor glow -->
+<div aria-hidden="true" class="cursor-glow"></div>
+<!-- Top live strip -->
+<div class="live-strip">
+<div class="live-left">
+<span class="ping"></span>
+<span class="live" data-i18n="live">LIVE</span>
+<span class="time" id="liveTime">—</span>
+</div>
+<div class="marquee-wrap">
+<div aria-label="Flux d'activité" class="marquee">
+<div class="marquee-item ok">
+<strong>client@shop.ma</strong><span data-i18n="prevision_generee">Prévision générée</span><b data-i18n="num_12">+ 12%</b>
+</div>
+<div class="marquee-item warn">
+<strong>team@retail.fr</strong><span data-i18n="alerte_baisse">Alerte baisse</span><b data-i18n="num_8">− 8%</b>
+</div>
+<div class="marquee-item ok">
+<strong>analyst@biz.com</strong><span data-i18n="rapport_exporte">Rapport exporté</span><b data-i18n="pdf">PDF</b>
+</div>
+<div class="marquee-item ok">
+<strong>owner@store.ma</strong><span data-i18n="auto_model">Auto-Model</span><b data-i18n="best_prophet">Best: Prophet</b>
+</div>
+<!-- duplicate for infinite -->
+<div class="marquee-item ok">
+<strong>client@shop.ma</strong><span data-i18n="prevision_generee">Prévision générée</span><b data-i18n="num_12">+ 12%</b>
+</div>
+<div class="marquee-item warn">
+<strong>team@retail.fr</strong><span data-i18n="alerte_baisse">Alerte baisse</span><b data-i18n="num_8">− 8%</b>
+</div>
+<div class="marquee-item ok">
+<strong>analyst@biz.com</strong><span data-i18n="rapport_exporte">Rapport exporté</span><b data-i18n="pdf">PDF</b>
+</div>
+<div class="marquee-item ok">
+<strong>owner@store.ma</strong><span data-i18n="auto_model">Auto-Model</span><b data-i18n="best_prophet">Best: Prophet</b>
+</div>
+</div>
+</div>
+</div>
+<!-- Navbar -->
+<header class="nav">
+<div class="nav-inner">
+<a aria-label="VentesPro" class="brand" href="#hero">
+<!-- LOGO VP (SVG) -->
+<span aria-hidden="true" class="logo">
+<svg aria-label="VP" role="img" viewbox="0 0 220 64" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="g1" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0" stop-color="#2c5bff"></stop>
+<stop offset="0.55" stop-color="#7c3aed"></stop>
+<stop offset="1" stop-color="#ec4899"></stop>
+</lineargradient>
+<filter height="200%" id="soft" width="140%" x="-20%" y="-50%">
+<fegaussianblur result="b" stddeviation="6"></fegaussianblur>
+<femerge>
+<femergenode in="b"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- badge -->
+<rect fill="url(#g1)" filter="url(#soft)" height="52" rx="16" width="60" x="2" y="6"></rect>
+<!-- chart line inside -->
+<path d="M14 42 L28 32 L38 36 L50 22" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+<circle cx="50" cy="22" fill="#fff" r="4.2"></circle>
+<!-- VP letters -->
+<g fill="#0b1633">
+<path d="M88 48 L74 16 H86 L94 38 L102 16 H114 L100 48 Z"></path>
+<path d="M120 48 V16 H138.5 C152 16 160 23 160 33 C160 43 152 48 138.5 48 H120 Z
+                       M132 38 H138.2 C145 38 148 35.8 148 33 C148 30.2 145 26 138.2 26 H132 V38 Z"></path>
+</g>
+</svg>
+</span>
+<span class="brand-text">
+<b data-i18n="ventespro">VentesPro</b>
+<small data-i18n="forecasting_analytics_alerts">Forecasting • Analytics • Alerts</small>
+</span>
+</a>
+<nav aria-label="Navigation" class="menu">
+<a data-i18n="fonctionnalites" href="#features">Fonctionnalités</a>
+<a data-i18n="fonctionnement" href="#how">Fonctionnement</a>
+<a data-i18n="modeles_ia" href="#models">Modèles IA</a>
+<a data-i18n="rapports" href="#reports">Rapports</a>
+<a data-i18n="contact" href="#contact">Contact</a>
+</nav>
+<div class="nav-cta">
+<a class="link" data-i18n="connexion" href="login.html">Connexion</a>
+<a class="btn ghost" data-i18n="creer_un_compte" href="signup.html">Créer un compte</a>
+<a class="btn primary" data-i18n="demander_une_demo" href="demo.html">Demander une démo</a>
+<button aria-expanded="false" aria-label="Ouvrir le menu" class="hamburger" id="hamburger">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+<div aria-hidden="true" class="mobile-menu" id="mobileMenu">
+<a data-i18n="fonctionnalites" href="#features">Fonctionnalités</a>
+<a data-i18n="fonctionnement" href="#how">Fonctionnement</a>
+<a data-i18n="modeles_ia" href="#models">Modèles IA</a>
+<a data-i18n="rapports" href="#reports">Rapports</a>
+<a data-i18n="contact" href="#contact">Contact</a>
+<a class="btn primary" data-i18n="demander_une_demo" href="#contact">Demander une démo</a>
+</div>
+</header>
+<!-- HERO -->
+<main class="hero" id="hero">
+<div aria-hidden="true" class="hero-bg"></div>
+<section class="container hero-grid">
+<div class="hero-left reveal">
+<span class="pill">
+<span class="spark">✨</span>
+          Plateforme intelligente de prévision &amp; analyse des ventes
+        </span>
+<h1>
+           <span data-i18n="hero_h1_a">Transforme ton historique de ventes en</span>
+           <span class="grad" data-i18n="hero_h1_b">prévisions fiables</span>,
+           <span class="grad2" data-i18n="hero_h1_c">alertes intelligentes</span>
+           <span data-i18n="hero_h1_d">et décisions data-driven.</span>
+         </h1>
+<p class="lead" data-i18n="ventespro_est_une_application_web_avance">
+          VentesPro est une application web avancée basée sur l’IA &amp; le Machine Learning.
+          Import CSV/Excel → analyse → prévision → alertes → rapports exportables, via une interface claire et interactive.
+        </p>
+<div class="hero-actions">
+<a class="btn primary big" data-i18n="essayer_ventespro" href="#contact">Essayer VentesPro</a>
+<a class="btn ghost big" data-i18n="voir_comment_ca_marche" href="#how">Voir comment ça marche</a>
+</div>
+<div class="kpis">
+<div class="kpi card-tilt magnetic reveal">
+<div class="kpi-num grad-text">+ MAE/RMSE</div>
+<div class="kpi-label">Comparaison automatique des modèles</div>
+</div>
+<div class="kpi card-tilt magnetic reveal" style="transition-delay:90ms">
+<div class="kpi-num grad-text2">CSV/Excel</div>
+<div class="kpi-label">Import &amp; configuration dynamique</div>
+</div>
+<div class="kpi card-tilt magnetic reveal" style="transition-delay:180ms">
+<div class="kpi-num grad-text3">Alertes</div>
+<div class="kpi-label">Seuils &amp; anomalies détectées</div>
+</div>
+</div>
+</div>
+<!-- Mockup -->
+<div class="hero-right reveal">
+<div class="mock card-tilt">
+<div class="mock-top">
+<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+<div class="mock-title">VentesPro Dashboard</div>
+</div>
+<div class="mock-body">
+<div class="mini-row">
+<div class="mini-card icon-card magnetic" data-tooltip="Import CSV/Excel + mapping colonnes">
+<div class="ic">
+<!-- upload icon -->
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 3v12"></path><path d="M7 8l5-5 5 5"></path><path d="M5 21h14"></path>
+</svg>
+</div>
+<div>
+<b data-i18n="donnees">Données</b>
+<small data-i18n="import_nettoyage">Import &amp; nettoyage</small>
+</div>
+</div>
+<div class="mini-card icon-card magnetic" data-tooltip="Courbes + saisonnalité + KPI">
+<div class="ic">
+<!-- chart icon -->
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3 3v18h18"></path><path d="M7 13l3-3 4 4 6-7"></path>
+</svg>
+</div>
+<div>
+<b data-i18n="dashboard">Dashboard</b>
+<small data-i18n="vue_globale">Vue globale</small>
+</div>
+</div>
+</div>
+<div class="mini-row">
+<div class="mini-card icon-card magnetic" data-tooltip="Naïf, Holt-Winters, ARIMA, Prophet…">
+<div class="ic">
+<!-- brain icon -->
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 22V6a3 3 0 0 1 6 0v16"></path><path d="M6 16a3 3 0 0 1 3-3"></path><path d="M18 16a3 3 0 0 0-3-3"></path>
+<path d="M6 10a3 3 0 0 1 3-3"></path><path d="M18 10a3 3 0 0 0-3-3"></path>
+</svg>
+</div>
+<div>
+<b data-i18n="previsions_ia">Prévisions IA</b>
+<small data-i18n="auto_model">Auto-Model</small>
+</div>
+</div>
+<div class="mini-card icon-card magnetic" data-tooltip="Alertes hausse/baisse + anomalies">
+<div class="ic">
+<!-- alert icon -->
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 9v4"></path><path d="M12 17h.01"></path>
+<path d="M10 3h4l7 12-2 4H5l-2-4 7-12z"></path>
+</svg>
+</div>
+<div>
+<b data-i18n="alertes">Alertes</b>
+<small data-i18n="seuils_risques">Seuils &amp; risques</small>
+</div>
+</div>
+</div>
+<div class="mock-graph">
+<div class="mock-graph-title">Prévision (intervalle de confiance)</div>
+<svg aria-hidden="true" class="sparkline" viewbox="0 0 420 160">
+<path class="grid" d="M0 40 H420 M0 80 H420 M0 120 H420"></path>
+<path class="line" d="M10 120 C60 90, 90 110, 140 80 C190 50, 220 60, 270 55 C320 50, 350 45, 410 35"></path>
+<path class="band" d="M10 130 C60 100, 90 120, 140 90 C190 60, 220 70, 270 65 C320 60, 350 55, 410 45
+                                   L410 25 C350 35, 320 40, 270 45 C220 50, 190 35, 140 60 C90 90, 60 75, 10 110 Z"></path>
+</svg>
+<div class="mock-tags">
+<span class="tag" data-i18n="mae">MAE</span>
+<span class="tag" data-i18n="rmse">RMSE</span>
+<span class="tag" data-i18n="saisonnalite">Saisonnalité</span>
+<span class="tag" data-i18n="anomalies">Anomalies</span>
+</div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="tooltip" id="tooltip" role="tooltip"></div>
+</div>
+</section>
+</main>
+<!-- FEATURES -->
+<section class="section" id="features">
+<div class="container">
+<div class="section-head reveal">
+<h2 data-i18n="tout_le_workflow_ventes_dans_une_seule_p">Tout le workflow ventes, dans une seule plateforme</h2>
+<p data-i18n="import_preparation_analyse_prevision_ale">Import → préparation → analyse → prévision → alertes → rapports. Simple, rapide, data-driven.</p>
+</div>
+<div class="grid3">
+<article class="feature card-tilt reveal">
+<div class="feature-ic magnetic">
+<span class="bubble">📥</span>
+</div>
+<h3 data-i18n="gestion_preparation_des_donnees">Gestion &amp; préparation des données</h3>
+<p data-i18n="import_csv_excel_mapping_colonnes_dates">Import CSV/Excel, mapping colonnes (dates, quantités, catégories), nettoyage, agrégation &amp; structuration temporelle.</p>
+</article>
+<article class="feature card-tilt reveal" style="transition-delay:90ms">
+<div class="feature-ic magnetic">
+<span class="bubble">📊</span>
+</div>
+<h3 data-i18n="tableau_de_bord_interactif">Tableau de bord interactif</h3>
+<p data-i18n="evolution_des_ventes_moyennes_saisonnali">Évolution des ventes, moyennes, saisonnalité (jours/mois forts), KPI, tendances — comprendre le passé avant de prévoir.</p>
+</article>
+<article class="feature card-tilt reveal" style="transition-delay:180ms">
+<div class="feature-ic magnetic">
+<span class="bubble">🚨</span>
+</div>
+<h3 data-i18n="alertes_intelligentes_2">Alertes intelligentes</h3>
+<p data-i18n="definis_des_seuils_de_variation_hausse_b">Définis des seuils de variation (hausse/baisse). Détection d’anomalies et alertes visuelles pour réagir vite.</p>
+</article>
+</div>
+</div>
+</section>
+<!-- HOW -->
+<section class="section alt" id="how">
+<div class="container">
+<div class="section-head reveal">
+<h2 data-i18n="comment_ca_marche">Comment ça marche</h2>
+<p data-i18n="un_parcours_fluide_pense_pour_la_prise_d">Un parcours fluide, pensé pour la prise de décision stratégique.</p>
+</div>
+<ol class="steps">
+<li class="step reveal card-tilt">
+<div class="step-n">01</div>
+<div class="step-body">
+<h3 data-i18n="importer_configurer">Importer &amp; configurer</h3>
+<p data-i18n="charge_tes_donnees_csv_excel_et_mappe_le">Charge tes données (CSV/Excel) et mappe les colonnes (date, quantité, catégorie…).</p>
+</div>
+<div class="step-ic magnetic" data-tooltip="Mapping intelligent + contrôle formats">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 4h16v16H4z"></path><path d="M4 9h16"></path><path d="M9 20V9"></path>
+</svg>
+</div>
+</li>
+<li class="step reveal card-tilt" style="transition-delay:90ms">
+<div class="step-n">02</div>
+<div class="step-body">
+<h3 data-i18n="analyser_comprendre">Analyser &amp; comprendre</h3>
+<p data-i18n="stats_distributions_correlations_moyenne">Stats, distributions, corrélations, moyennes mobiles, saisonnalité — révèle les patterns cachés.</p>
+</div>
+<div class="step-ic magnetic" data-tooltip="Analyse avancée + visualisations">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3 3v18h18"></path><path d="M7 15v3"></path><path d="M12 12v6"></path><path d="M17 7v11"></path>
+</svg>
+</div>
+</li>
+<li class="step reveal card-tilt" style="transition-delay:180ms">
+<div class="step-n">03</div>
+<div class="step-body">
+<h3 data-i18n="prevoir_avec_l_ia">Prévoir avec l’IA</h3>
+<p data-i18n="mode_auto_compare_mae_rmse_et_selectionn">Mode Auto compare MAE/RMSE et sélectionne le modèle le plus fiable, avec intervalle de confiance.</p>
+</div>
+<div class="step-ic magnetic" data-tooltip="Auto-Model + intervalles">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"></path>
+</svg>
+</div>
+</li>
+<li class="step reveal card-tilt" style="transition-delay:270ms">
+<div class="step-n">04</div>
+<div class="step-body">
+<h3 data-i18n="declencher_des_alertes">Déclencher des alertes</h3>
+<p data-i18n="seuils_hausse_baisse_anomalies_notificat">Seuils (hausse/baisse), anomalies, notifications visuelles — anticipe risques et opportunités.</p>
+</div>
+<div class="step-ic magnetic" data-tooltip="Alertes + anomalies">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 9v4"></path><path d="M12 17h.01"></path>
+<path d="M10 3h4l7 12-2 4H5l-2-4 7-12z"></path>
+</svg>
+</div>
+</li>
+<li class="step reveal card-tilt" style="transition-delay:360ms">
+<div class="step-n">05</div>
+<div class="step-body">
+<h3 data-i18n="exporter_des_rapports">Exporter des rapports</h3>
+<p data-i18n="rapports_synthetiques_et_partageables_po">Rapports synthétiques et partageables pour stock, planification commerciale et objectifs.</p>
+</div>
+<div class="step-ic magnetic" data-tooltip="Export + partage">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+<path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h8"></path>
+</svg>
+</div>
+</li>
+</ol>
+</div>
+</section>
+<!-- MODELS -->
+<section class="section" id="models">
+<div class="container">
+<div class="section-head reveal">
+<h2 data-i18n="previsions_ia_plusieurs_familles_de_mode">Prévisions IA : plusieurs familles de modèles</h2>
+<p data-i18n="statistiques_machine_learning_modeles_av">Statistiques, Machine Learning, modèles avancés — avec sélection automatique du meilleur.</p>
+</div>
+<div class="grid3">
+<article class="model card-tilt reveal">
+<h3 data-i18n="statistiques">Statistiques</h3>
+<ul>
+<li>Naïf</li>
+<li>Tendance linéaire</li>
+<li>Moyennes mobiles</li>
+<li>Holt-Winters</li>
+<li>ARIMA</li>
+</ul>
+<div class="chip magnetic" data-tooltip="Rapides &amp; efficaces sur séries stables">Robustes</div>
+</article>
+<article class="model card-tilt reveal" style="transition-delay:90ms">
+<h3 data-i18n="machine_learning">Machine Learning</h3>
+<ul>
+<li>Random Forest</li>
+<li>XGBoost</li>
+<li>Features temporelles</li>
+<li>Corrélations</li>
+</ul>
+<div class="chip magnetic" data-tooltip="Idéal quand plusieurs variables influencent les ventes">Flexible</div>
+</article>
+<article class="model card-tilt reveal" style="transition-delay:180ms">
+<h3 data-i18n="avances">Avancés</h3>
+<ul>
+<li>Prophet</li>
+<li>Intervalles de confiance</li>
+<li>Gestion saisonnalité</li>
+<li>Changements de tendance</li>
+</ul>
+<div class="chip magnetic" data-tooltip="Très bon pour saisonnalité &amp; ruptures">Smart</div>
+</article>
+</div>
+</div>
+</section>
+<!-- REPORTS -->
+<section class="section alt" id="reports">
+<div class="container">
+<div class="cta reveal card-tilt">
+<div class="cta-left">
+<h2 data-i18n="rapports_aide_a_la_decision">Rapports &amp; aide à la décision</h2>
+<p data-i18n="genere_des_rapports_synthetiques_exporta">
+            Génère des rapports synthétiques exportables pour suivre la performance, partager les résultats,
+            optimiser le stock, la planification commerciale et les objectifs de vente.
+          </p>
+<div class="cta-badges">
+<span class="badge magnetic" data-i18n="insights" data-tooltip="KPIs + insights">📌 Insights</span>
+<span class="badge magnetic" data-i18n="export" data-tooltip="Export PDF/CSV">📤 Export</span>
+<span class="badge magnetic" data-i18n="trends" data-tooltip="Suivi évolutions">📈 Trends</span>
+</div>
+</div>
+<div class="cta-right">
+<div class="cta-box">
+<div class="cta-box-top">
+<b data-i18n="objectif">Objectif</b>
+<span data-i18n="democratiser_la_data_science_appliquee_a">Démocratiser la data science appliquée aux ventes</span>
+</div>
+<div class="cta-box-body">
+<div class="meter">
+<span data-i18n="fiabilite">Fiabilité</span>
+<div class="bar"><i style="width:86%"></i></div>
+</div>
+<div class="meter">
+<span data-i18n="clarte">Clarté</span>
+<div class="bar"><i style="width:92%"></i></div>
+</div>
+<div class="meter">
+<span data-i18n="proactivite">Proactivité</span>
+<div class="bar"><i style="width:88%"></i></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+<div class="container">
+<div class="section-head reveal">
+<h2 data-i18n="demander_une_demo">Demander une démo</h2>
+<p data-i18n="dis_moi_ton_secteur_et_ton_type_de_donne">Dis-moi ton secteur et ton type de données — je t’aide à configurer VentesPro rapidement.</p>
+</div>
+<form autocomplete="on" class="form card-tilt reveal">
+<div class="row">
+<label data-i18n="nom">Nom</label>
+<input data-i18n-placeholder="form_name_ph" placeholder="Votre nom" required="" type="text"/>
+</div>
+<div class="row">
+<label data-i18n="email">Email</label>
+<input data-i18n-placeholder="form_email_ph" placeholder="vous@exemple.com" required="" type="email"/>
+</div>
+<div class="row">
+<label data-i18n="type_de_business">Type de business</label>
+<select required="">
+<option data-i18n="choisir" value="">Choisir…</option>
+<option data-i18n="commerce_retail">Commerce / Retail</option>
+<option data-i18n="e_commerce">E-commerce</option>
+<option data-i18n="distribution">Distribution</option>
+<option data-i18n="services">Services</option>
+<option data-i18n="autre">Autre</option>
+</select>
+</div>
+<div class="row">
+<label data-i18n="message">Message</label>
+<textarea data-i18n-placeholder="form_msg_ph" placeholder="Ex: je veux prévoir mes ventes par catégorie sur 3 mois…" rows="4"></textarea>
+</div>
+<button class="btn primary big" data-i18n="envoyer" type="submit">Envoyer</button>
+<p class="fine" data-i18n="demo_gratuite_reponse_rapide">* Démo gratuite — réponse rapide.</p>
+</form>
+</div>
+</section>
+<footer class="footer">
+<div class="container foot">
+<div>
+<b data-i18n="ventespro">VentesPro</b>
+<small data-i18n="previsions_analyse_alertes">Prévisions • Analyse • Alertes</small>
+</div>
+<div class="foot-links">
+<a data-i18n="fonctionnalites" href="#features">Fonctionnalités</a>
+<a data-i18n="modeles" href="#models">Modèles</a>
+<a data-i18n="contact" href="#contact">Contact</a>
+</div>
+<div class="copy">© <span id="year"></span> VentesPro. Tous droits réservés.</div>
+</div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
