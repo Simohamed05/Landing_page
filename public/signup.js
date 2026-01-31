@@ -52,14 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok || !data.ok) {
         setMsg(data.message || "Signup failed");
         return;
-      }
+    }
 
-      setMsg("Account created! Redirecting...", true);
+    /* ✅ FORCED REDIRECT */
+    window.location.href = "https://ventespro.streamlit.app";
+    return;
 
-      // ✅ Redirection vers Streamlit
-      setTimeout(() => {
-        window.location.replace("https://ventespro.streamlit.app");
-      }, 400);
 
       // (Alternative si tu préfères envoyer vers login)
       // window.location.replace("/login.html");
