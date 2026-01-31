@@ -1,48 +1,72 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
-  const msg = document.getElementById("loginMsg"); // un <div> pour afficher message
+  const msg = document.getElementById("loginMsg");
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
   if (!form) {
     console.error("❌ loginForm not found");
     return;
   }
 
+  const setMsg = (text = "", type = "") => {
+    if (!msg) return;
+    msg.textContent = text;
+    msg.classList.remove("error", "success");
+    if (type) msg.classList.add(type);
+  };
+
   form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // IMPORTANT (empêche reload)
+    e.preventDefault();
 
-    if (msg) msg.textContent = "Loading...";
+    setMsg("");
 
-    const email = document.getElementById("email")?.value?.trim() || "";
-    const password = document.getElementById("password")?.value || "";
+    const email = String(document.getElementById("email")?.value || "").trim();
+    const password = String(document.getElementById("password")?.value || "");
+
+    if (!email || !password) {
+      setMsg("Missing email or password", "error");
+      return;
+    }
 
     try {
+      setMsg("Loading...");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.7";
+      }
+
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       console.log("LOGIN RESPONSE:", data);
 
       if (!res.ok || !data.ok) {
-        if (msg) msg.textContent = data.message || "Login failed";
+        setMsg(data.message || "Login failed", "error");
         return;
       }
 
-      // stock token (optionnel)
+      // optionnel
       if (data.token) localStorage.setItem("token", data.token);
 
-      if (msg) msg.textContent = "Login success! Redirecting...";
+      setMsg("Login success! Redirecting...", "success");
 
-      // redirection FORCÉE
       setTimeout(() => {
+        setMsg("");
         window.location.replace("https://ventespro.streamlit.app");
-      }, 300);
+      }, 150);
 
     } catch (err) {
       console.error(err);
-      if (msg) msg.textContent = "Network error";
+      setMsg("Network error", "error");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+      }
     }
   });
 });
