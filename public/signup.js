@@ -1,17 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signupForm");
   const msg = document.getElementById("signupMsg");
-  const submitBtn = form?.querySelector('button[type="submit"]');
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
   if (!form) {
     console.error("❌ signupForm not found");
     return;
   }
 
-  const setMsg = (text, ok = false) => {
+  const setMsg = (text = "", type = "") => {
     if (!msg) return;
     msg.textContent = text;
-    msg.style.color = ok ? "#0a7a2f" : "#b00020";
+    msg.classList.remove("error", "success");
+    if (type) msg.classList.add(type);
   };
 
   form.addEventListener("submit", async (e) => {
@@ -23,13 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = String(fd.get("password") || "");
     const password2 = String(fd.get("password2") || "");
 
+    // reset message
+    setMsg("");
+
     if (password.length < 6) {
-      setMsg("Password must be at least 6 characters.");
+      setMsg("Password must be at least 6 characters.", "error");
       return;
     }
 
     if (password !== password2) {
-      setMsg("Passwords do not match.");
+      setMsg("Passwords do not match.", "error");
       return;
     }
 
@@ -46,25 +50,25 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       console.log("SIGNUP RESPONSE:", data);
 
       if (!res.ok || !data.ok) {
-        setMsg(data.message || "Signup failed");
+        setMsg(data.message || "Signup failed", "error");
         return;
-    }
+      }
 
-    /* ✅ FORCED REDIRECT */
-    window.location.href = "https://ventespro.streamlit.app";
-    return;
+      setMsg("Account created! Redirecting...", "success");
 
-
-      // (Alternative si tu préfères envoyer vers login)
-      // window.location.replace("/login.html");
+      // ✅ tiny delay to avoid message flicker
+      setTimeout(() => {
+        setMsg("");
+        window.location.replace("https://ventespro.streamlit.app");
+      }, 150);
 
     } catch (err) {
       console.error(err);
-      setMsg("Network error");
+      setMsg("Network error", "error");
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
