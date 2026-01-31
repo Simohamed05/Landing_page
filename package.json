@@ -1,12 +1,12 @@
 {
   "name": "ventespro-landing",
   "scripts": {
-  "dev": "vercel dev"
-},
-
+    "dev": "vercel dev"
+  },
   "type": "module",
   "private": true,
   "dependencies": {
+    "@vercel/postgres": "^0.10.0",
     "bcryptjs": "^3.0.3",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.16.2"

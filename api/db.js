@@ -1,4 +1,6 @@
-import mysql from "mysql2/promise";
+import { sql } from "@vercel/postgres";
+
+// Export simple : tu utiliseras `sql` partout
 
 let pool;
 
@@ -34,3 +36,4 @@ export async function getPool() {
 
   return pool;
 }
+export { sql };
