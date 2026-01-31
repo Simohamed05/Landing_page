@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-
+export { sql };
 // Export simple : tu utiliseras `sql` partout
 
 let pool;
@@ -36,4 +36,4 @@ export async function getPool() {
 
   return pool;
 }
-export { sql };
+ 
