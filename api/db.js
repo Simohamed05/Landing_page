@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import { getPool } from "./db.js";
 
 let pool;
 

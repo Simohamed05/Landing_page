@@ -1,3 +1,4 @@
+import { getPool } from "./db.js";
 export default function handler(req, res) {
   return res.status(200).json({
     MYSQL_HOST: process.env.MYSQL_HOST,
