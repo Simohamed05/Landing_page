@@ -7,6 +7,7 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { db } from "./db.js";
+import { getPool } from "./db.js";
 
 
 const app = express();
