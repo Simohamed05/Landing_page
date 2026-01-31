@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signupForm");
   const msg = document.getElementById("signupMsg");
-  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  const submitBtn = form?.querySelector('button[type="submit"]');
 
-  if (!form) {
-    console.error("❌ signupForm not found");
+  if (!form || !msg) {
+    console.error("❌ signupForm or signupMsg not found");
     return;
   }
 
+  let isSubmitting = false; // ✅ anti double submit
+
   const setMsg = (text = "", type = "") => {
-    if (!msg) return;
     msg.textContent = text;
     msg.classList.remove("error", "success");
     if (type) msg.classList.add(type);
@@ -18,58 +19,69 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    if (isSubmitting) return; // ✅ bloque double click
+    isSubmitting = true;
+
     const fd = new FormData(form);
     const name = String(fd.get("name") || "").trim();
-    const email = String(fd.get("email") || "").trim();
+    const email = String(fd.get("email") || "").trim().toLowerCase();
     const password = String(fd.get("password") || "");
     const password2 = String(fd.get("password2") || "");
 
-    // reset message
-    setMsg("");
-
     if (password.length < 6) {
       setMsg("Password must be at least 6 characters.", "error");
+      isSubmitting = false;
       return;
     }
 
     if (password !== password2) {
       setMsg("Passwords do not match.", "error");
+      isSubmitting = false;
       return;
     }
 
-    try {
-      setMsg("Creating account...");
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = "0.7";
-      }
+    setMsg("Creating account...", "");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = "0.7";
+    }
 
+    try {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password })
       });
 
-      const data = await res.json().catch(() => ({}));
-      console.log("SIGNUP RESPONSE:", data);
+      // ✅ JSON safe parse
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
 
-      if (!res.ok || !data.ok) {
-        setMsg(data.message || "Signup failed", "error");
+      // ✅ SUCCESS uniquement si res.ok ET data.ok
+      if (res.ok && data.ok) {
+        setMsg("Account created! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.replace("https://ventespro.streamlit.app");
+        }, 400);
         return;
       }
 
-      setMsg("Account created! Redirecting...", "success");
+      // ✅ cas email already used (409)
+      if (res.status === 409) {
+        setMsg("Email already used", "error");
+        return;
+      }
 
-      // ✅ tiny delay to avoid message flicker
-      setTimeout(() => {
-        setMsg("");
-        window.location.replace("https://ventespro.streamlit.app");
-      }, 150);
-
+      setMsg(data.message || "Signup failed", "error");
     } catch (err) {
       console.error(err);
       setMsg("Network error", "error");
     } finally {
+      isSubmitting = false;
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.style.opacity = "1";
