@@ -906,3 +906,6 @@ h1, .section-head h2{
   transition: width .2s ease-out;
 }
  
+.form-msg { margin-top: 10px; font-size: 0.9rem; }
+.form-msg.error { color: #b00020; }
+.form-msg.success { color: #0a7a2f; }
