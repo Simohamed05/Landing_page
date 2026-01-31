@@ -2,24 +2,23 @@
 <html lang="fr">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MGEDH0Z138"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MGEDH0Z138"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MGEDH0Z138');
+  </script>
 
-  gtag('config', 'G-MGEDH0Z138');
-</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>VentesPro — Connexion</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-<div id="loginMsg"></div>
-<script src="/login.js"></script>
 
 <body>
   <div class="cursor-glow" aria-hidden="true"></div>
@@ -47,8 +46,6 @@
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="VentesPro">
         <span class="logo" aria-hidden="true">
-          <!-- mini logo -->
-          <span class="logo">
           <img src="VentesPRO.png" alt="VentesPro logo" class="logo-img" loading="lazy" />
         </span>
       </a>
@@ -94,8 +91,9 @@
           </div>
 
           <button class="btn primary big" type="submit" data-i18n="login.submit">Se connecter</button>
-          <p class="form-msg" id="loginMsg" aria-live="polite"></p>
 
+          <!-- ✅ UN SEUL message -->
+          <p class="form-msg" id="loginMsg" aria-live="polite"></p>
 
           <p class="fine">
             <a class="link" href="demo.html" data-i18n="login.noAccount">Pas de compte ? Demander une démo</a>
@@ -110,31 +108,12 @@
             <div class="mock-title" data-i18n="login.sideTitle">Accès rapide</div>
           </div>
           <div class="mock-body">
-            <div class="mini-card">
-              <div class="ic">🔮</div>
-              <div>
-                <b data-i18n="login.side1t">Prévisions</b>
-                <small data-i18n="login.side1d">Auto-Model + intervalles</small>
-              </div>
-            </div>
-            <div class="mini-card">
-              <div class="ic">🚨</div>
-              <div>
-                <b data-i18n="login.side2t">Alertes</b>
-                <small data-i18n="login.side2d">Seuils & anomalies</small>
-              </div>
-            </div>
-            <div class="mini-card">
-              <div class="ic">📑</div>
-              <div>
-                <b data-i18n="login.side3t">Rapports</b>
-                <small data-i18n="login.side3d">Export & partage</small>
-              </div>
-            </div>
+            <div class="mini-card"><div class="ic">🔮</div><div><b data-i18n="login.side1t">Prévisions</b><small data-i18n="login.side1d">Auto-Model + intervalles</small></div></div>
+            <div class="mini-card"><div class="ic">🚨</div><div><b data-i18n="login.side2t">Alertes</b><small data-i18n="login.side2d">Seuils & anomalies</small></div></div>
+            <div class="mini-card"><div class="ic">📑</div><div><b data-i18n="login.side3t">Rapports</b><small data-i18n="login.side3d">Export & partage</small></div></div>
           </div>
         </div>
       </div>
-
     </section>
   </main>
 
@@ -152,33 +131,8 @@
     </div>
   </footer>
 
+  <!-- ✅ app.js (lang/time) puis login.js (submit) -->
   <script src="app.js"></script>
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-      if (data.ok) {
-        // stocke le token localement
-        localStorage.setItem("token", data.token);
-        // redirige vers l’application Streamlit
-        window.location.href = "https://ventespro.streamlit.app";
-      } else {
-        alert(data.message || "Connexion impossible");
-      }
-    });
-    </script>
-
-
-
+  <script src="/login.js"></script>
 </body>
 </html>
-

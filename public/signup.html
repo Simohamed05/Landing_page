@@ -2,17 +2,18 @@
 <html lang="fr">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MGEDH0Z138"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MGEDH0Z138"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MGEDH0Z138');
+  </script>
 
-  gtag('config', 'G-MGEDH0Z138');
-</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>VentesPro — Inscription</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -45,7 +46,6 @@
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="VentesPro">
         <span class="logo" aria-hidden="true">
-          <span class="logo">
           <img src="VentesPRO.png" alt="VentesPro logo" class="logo-img" loading="lazy" />
         </span>
       </a>
@@ -101,6 +101,8 @@
           </div>
 
           <button class="btn primary big" type="submit" data-i18n="signup.submit">Créer mon compte</button>
+
+          <!-- ✅ UN SEUL message -->
           <p class="form-msg" id="signupMsg" aria-live="polite"></p>
 
           <p class="fine">
@@ -138,9 +140,9 @@
       <div class="copy">© <span id="year"></span> VentesPro.</div>
     </div>
   </footer>
-  <script src="/signup.js"></script>
 
+  <!-- ✅ app.js puis signup.js -->
   <script src="app.js"></script>
+  <script src="/signup.js"></script>
 </body>
 </html>
-
