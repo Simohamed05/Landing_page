@@ -4,9 +4,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
 
-  const { email = '', password = '' } = req.body;
+  const { email = "", password = "" } = req.body || {};
   const cleanEmail = String(email).trim().toLowerCase();
   if (!cleanEmail || !password) return res.status(400).json({ message: 'Missing email/password' });
 
@@ -29,4 +31,19 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(500).json({ message: 'DB error', detail: e.message });
   }
+  if (!ok) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+
+  const token = jwt.sign(
+    { id: user.id, email: user.email, name: user.name, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+
+  return res.status(200).json({
+    ok: true,
+    token,
+    user: { id: user.id, name: user.name, email: user.email, role: user.role }
+  });
 }

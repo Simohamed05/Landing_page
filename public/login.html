@@ -149,7 +149,30 @@
   </footer>
 
   <script src="app.js"></script>
-  <script src="/login.js"></script>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (data.ok) {
+        // stocke le token localement
+        localStorage.setItem("token", data.token);
+        // redirige vers l’application Streamlit
+        window.location.href = "https://ventespro.streamlit.app";
+      } else {
+        alert(data.message || "Connexion impossible");
+      }
+    });
+    </script>
+
 
 
 </body>
