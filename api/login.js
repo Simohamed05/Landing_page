@@ -6,14 +6,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-  const data = await res.json();
 
-  if (data.ok) {
-    localStorage.setItem("token", data.token); // optionnel
-    window.location.href = "https://ventespro.streamlit.app";
-  } else {
-    alert(data.message || "Login failed");
-  }
   const { email = "", password = "" } = req.body || {};
   const cleanEmail = String(email).trim().toLowerCase();
 
@@ -37,7 +30,6 @@ export default async function handler(req, res) {
     `;
 
     if (result.rowCount === 0) {
-      // log attempt (optional)
       await sql`
         INSERT INTO login_logs (user_id, email, success, ip, user_agent)
         VALUES (${null}, ${cleanEmail}, ${false}, ${ip}, ${ua})
@@ -48,7 +40,6 @@ export default async function handler(req, res) {
     const user = result.rows[0];
     const ok = await bcrypt.compare(String(password), user.password_hash);
 
-    // log attempt (optional)
     await sql`
       INSERT INTO login_logs (user_id, email, success, ip, user_agent)
       VALUES (${user.id}, ${cleanEmail}, ${ok}, ${ip}, ${ua})
@@ -69,7 +60,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role }
+      redirectTo: "https://ventespro.streamlit.app"
     });
   } catch (e) {
     return res.status(500).json({ message: "DB error", detail: e.message });
