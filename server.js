@@ -6,8 +6,10 @@ import fs from "fs";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { db } from "./db.js";
-import { getPool } from "./db.js";
+
+// Par (si vous n'utilisez pas getPool, vous pouvez supprimer la seconde ligne)
+import { db, getPool } from "./db.js";
+
 
 
 const app = express();
