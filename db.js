@@ -11,7 +11,7 @@ export function getPool() {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
       connectTimeout: 10000,
-      ssl: { rejectUnauthorized: false }, // important pour Railway externe
+      ssl: { rejectUnauthorized: false },
       waitForConnections: true,
       connectionLimit: 5,
       queueLimit: 0,
