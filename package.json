@@ -1,5 +1,9 @@
 {
   "name": "ventespro-landing",
+  "scripts": {
+  "dev": "vercel dev"
+},
+
   "type": "module",
   "private": true,
   "dependencies": {
