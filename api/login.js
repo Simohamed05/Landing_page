@@ -1,5 +1,6 @@
-import { getPool } from "./db.js";
+import { sql } from "./db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -7,44 +8,63 @@ export default async function handler(req, res) {
   }
 
   const { email = "", password = "" } = req.body || {};
+  const cleanEmail = String(email).trim().toLowerCase();
 
-  if (!email.trim() || !password) {
-    return res.status(400).json({ message: "Email et mot de passe requis" });
+  if (!cleanEmail || !password) {
+    return res.status(400).json({ message: "Missing email/password" });
   }
 
+  const ip =
+    (req.headers["x-forwarded-for"]?.toString().split(",")[0] || "").trim() ||
+    req.socket?.remoteAddress ||
+    null;
+
+  const ua = String(req.headers["user-agent"] || "").slice(0, 255);
+
   try {
-    const pool = getPool();
+    const result = await sql`
+      SELECT id, name, email, password_hash, role
+      FROM users
+      WHERE email = ${cleanEmail}
+      LIMIT 1
+    `;
 
-    // Récupérer l'utilisateur
-    const [rows] = await pool.query(
-      "SELECT id, password_hash FROM users WHERE email = ?",
-      [email.trim()]
-    );
-
-    if (rows.length === 0) {
-      return res.status(401).json({ message: "Identifiants invalides" });
+    if (result.rowCount === 0) {
+      // log attempt (optional)
+      await sql`
+        INSERT INTO login_logs (user_id, email, success, ip, user_agent)
+        VALUES (${null}, ${cleanEmail}, ${false}, ${ip}, ${ua})
+      `;
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Comparer les mots de passe
-    const validPassword = await bcrypt.compare(
-      password,
-      rows[0].password_hash
-    );
+    const user = result.rows[0];
+    const ok = await bcrypt.compare(String(password), user.password_hash);
 
-    if (!validPassword) {
-      return res.status(401).json({ message: "Identifiants invalides" });
+    // log attempt (optional)
+    await sql`
+      INSERT INTO login_logs (user_id, email, success, ip, user_agent)
+      VALUES (${user.id}, ${cleanEmail}, ${ok}, ${ip}, ${ua})
+    `;
+
+    if (!ok) return res.status(401).json({ message: "Invalid credentials" });
+
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: "JWT_SECRET missing in env" });
     }
 
-    // Login OK
+    const token = jwt.sign(
+      { id: user.id, email: user.email, name: user.name, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
     return res.status(200).json({
-      success: true,
-      userId: rows[0].id
+      ok: true,
+      token,
+      user: { id: user.id, name: user.name, email: user.email, role: user.role }
     });
-
-  } catch (error) {
-    return res.status(500).json({
-      message: "Erreur serveur",
-      error: error.message
-    });
+  } catch (e) {
+    return res.status(500).json({ message: "DB error", detail: e.message });
   }
 }

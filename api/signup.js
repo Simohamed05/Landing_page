@@ -1,4 +1,4 @@
-import { getPool } from "./db.js";
+import { sql } from "./db.js";
 import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
@@ -7,42 +7,26 @@ export default async function handler(req, res) {
   }
 
   const { name = "", email = "", password = "" } = req.body || {};
+  const cleanEmail = String(email).trim().toLowerCase();
 
-  // Validation simple
-  if (!email.trim() || password.length < 6) {
-    return res.status(400).json({
-      message: "Email invalide ou mot de passe trop court (min 6 caractères)"
-    });
+  if (!cleanEmail || String(password).length < 6) {
+    return res.status(400).json({ message: "Invalid email or password too short (min 6)" });
   }
 
   try {
-    const pool = getPool();
+    // check exists
+    const { rowCount } = await sql`SELECT 1 FROM users WHERE email = ${cleanEmail}`;
+    if (rowCount > 0) return res.status(409).json({ message: "Email already used" });
 
-    // Vérifier si l'email existe déjà
-    const [existing] = await pool.query(
-      "SELECT id FROM users WHERE email = ?",
-      [email.trim()]
-    );
+    const password_hash = await bcrypt.hash(String(password), 12);
 
-    if (existing.length > 0) {
-      return res.status(409).json({ message: "Email déjà utilisé" });
-    }
+    await sql`
+      INSERT INTO users (name, email, password_hash)
+      VALUES (${name.trim() || null}, ${cleanEmail}, ${password_hash})
+    `;
 
-    // Hash du mot de passe
-    const password_hash = await bcrypt.hash(password, 10);
-
-    // Insertion utilisateur
-    await pool.query(
-      "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
-      [name.trim(), email.trim(), password_hash]
-    );
-
-    return res.status(200).json({ success: true });
-
-  } catch (error) {
-    return res.status(500).json({
-      message: "Erreur serveur",
-      error: error.message
-    });
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    return res.status(500).json({ message: "DB error", detail: e.message });
   }
 }
