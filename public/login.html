@@ -18,6 +18,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
+<div id="loginMsg"></div>
+<script src="/login.js"></script>
+
 <body>
   <div class="cursor-glow" aria-hidden="true"></div>
 
@@ -82,12 +85,12 @@
         <form class="form card-tilt reveal" id="loginForm" autocomplete="on">
           <div class="row">
             <label data-i18n="login.emailLabel">Email</label>
-            <input name="email" type="email" required data-i18n-placeholder="login.emailPH" placeholder="vous@exemple.com" />
+            <input id="email" name="email" type="email" required data-i18n-placeholder="login.emailPH" placeholder="vous@exemple.com" />
           </div>
 
           <div class="row">
             <label data-i18n="login.passLabel">Mot de passe</label>
-            <input name="password" type="password" required data-i18n-placeholder="login.passPH" placeholder="••••••••" />
+            <input id="password" name="password" type="password" required data-i18n-placeholder="login.passPH" placeholder="••••••••" />
           </div>
 
           <button class="btn primary big" type="submit" data-i18n="login.submit">Se connecter</button>

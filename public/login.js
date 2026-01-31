@@ -1,34 +1,48 @@
-// pages/login.js – exécute dans le navigateur
-import { useState } from 'react';
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
+  const msg = document.getElementById("loginMsg"); // un <div> pour afficher message
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  if (!form) {
+    console.error("❌ loginForm not found");
+    return;
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    if (data.ok) {
-      localStorage.setItem('token', data.token);
-      window.location.href = 'https://ventespro.streamlit.app';  // redirection après succès
-    } else {
-      setError(data.message || 'Login failed');
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // IMPORTANT (empêche reload)
+
+    if (msg) msg.textContent = "Loading...";
+
+    const email = document.getElementById("email")?.value?.trim() || "";
+    const password = document.getElementById("password")?.value || "";
+
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+      console.log("LOGIN RESPONSE:", data);
+
+      if (!res.ok || !data.ok) {
+        if (msg) msg.textContent = data.message || "Login failed";
+        return;
+      }
+
+      // stock token (optionnel)
+      if (data.token) localStorage.setItem("token", data.token);
+
+      if (msg) msg.textContent = "Login success! Redirecting...";
+
+      // redirection FORCÉE
+      setTimeout(() => {
+        window.location.replace("https://ventespro.streamlit.app");
+      }, 300);
+
+    } catch (err) {
+      console.error(err);
+      if (msg) msg.textContent = "Network error";
     }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <button type="submit">Se connecter</button>
-      {error && <p style={{color:'red'}}>{error}</p>}
-    </form>
-  );
-}
+  });
+});
