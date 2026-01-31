@@ -6,7 +6,14 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
+  const data = await res.json();
 
+  if (data.ok) {
+    localStorage.setItem("token", data.token); // optionnel
+    window.location.href = "https://ventespro.streamlit.app";
+  } else {
+    alert(data.message || "Login failed");
+  }
   const { email = "", password = "" } = req.body || {};
   const cleanEmail = String(email).trim().toLowerCase();
 
