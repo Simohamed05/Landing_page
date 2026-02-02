@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
     // 1) Save DB
     await sql`
-      INSERT INTO demo_requests (name, email, business, message)
+      INSERT INTO demos (name, email, business, message)
       VALUES (${String(name).trim()}, ${String(email).trim().toLowerCase()}, ${String(business).trim()}, ${message ? String(message).trim() : null})
     `;
 
