@@ -77,3 +77,5 @@ export async function sendDemoAutoReply({ to, name, business }) {
     html,
   });
 }
+console.log("SMTP USER:", process.env.SMTP_USER);
+console.log("SMTP HOST:", process.env.SMTP_HOST);
