@@ -6,6 +6,8 @@ import fs from "fs";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendDemoAutoReply } from "./mailer.js";
+
 
 // Par (si vous n'utilisez pas getPool, vous pouvez supprimer la seconde ligne)
 import { db, getPool } from "./db.js";
@@ -172,3 +174,22 @@ app.get("/api/admin/logins", adminKey, async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`✅ Server running: http://localhost:${PORT}`));
+
+
+app.post("/api/demo", async (req, res) => {
+  const { name, email, business, message } = req.body || {};
+  if (!name || !email || !business) {
+    return res.status(400).json({ message: "Missing fields (name/email/business)" });
+  }
+
+  await db.query(
+    "INSERT INTO demo_requests (name, email, business, message) VALUES (?,?,?,?)",
+    [name, email, business, message || null]
+  );
+
+  // ✅ auto reply email (ne bloque pas la réponse si l’email échoue)
+  sendDemoAutoReply({ to: email, name, business })
+    .catch((e) => console.error("Auto-reply failed:", e.message));
+
+  res.json({ ok: true, message: "✅ Demande envoyée !" });
+});
