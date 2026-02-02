@@ -909,3 +909,66 @@ h1, .section-head h2{
 .form-msg { margin-top: 10px; font-size: 0.9rem; }
 .form-msg.error { color: #b00020; }
 .form-msg.success { color: #0a7a2f; }
+
+/* =========================
+   Mobile fixes
+   ========================= */
+@media (max-width: 900px) {
+  .nav-inner {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .menu {
+    display: none; /* cache le menu horizontal */
+  }
+
+  .nav-cta {
+    gap: 10px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .mock {
+    margin-top: 10px;
+  }
+
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .live-strip {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 40px; line-height: 1.05; }
+  .lead { font-size: 15px; }
+
+  .form {
+    padding: 14px !important;
+  }
+
+  .row input, .row select, .row textarea {
+    font-size: 16px; /* évite zoom iOS */
+  }
+
+  .btn.big {
+    width: 100%;
+  }
+
+  .mock-body .mini-card {
+    gap: 10px;
+  }
+
+  .marquee-wrap {
+    overflow: hidden;
+  }
+}

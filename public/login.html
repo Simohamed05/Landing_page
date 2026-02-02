@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MGEDH0Z138"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -9,7 +8,7 @@
     gtag('js', new Date());
     gtag('config', 'G-MGEDH0Z138');
   </script>
-
+  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>VentesPro — Connexion</title>
@@ -31,10 +30,6 @@
     </div>
     <div class="marquee-wrap">
       <div class="marquee">
-        <div class="marquee-item ok"><strong>user@biz.com</strong><span data-i18n="live.login">Connexion</span><b>OK</b></div>
-        <div class="marquee-item ok"><strong>owner@store.ma</strong><span data-i18n="live.secure">Sécurisé</span><b>SSL</b></div>
-        <div class="marquee-item ok"><strong>team@retail.fr</strong><span data-i18n="live.analytics">Analytics</span><b>ON</b></div>
-
         <div class="marquee-item ok"><strong>user@biz.com</strong><span data-i18n="live.login">Connexion</span><b>OK</b></div>
         <div class="marquee-item ok"><strong>owner@store.ma</strong><span data-i18n="live.secure">Sécurisé</span><b>SSL</b></div>
         <div class="marquee-item ok"><strong>team@retail.fr</strong><span data-i18n="live.analytics">Analytics</span><b>ON</b></div>
@@ -82,17 +77,15 @@
         <form class="form card-tilt reveal" id="loginForm" autocomplete="on">
           <div class="row">
             <label data-i18n="login.emailLabel">Email</label>
-            <input id="email" name="email" type="email" required data-i18n-placeholder="login.emailPH" placeholder="vous@exemple.com" />
+            <input id="email" name="email" type="email" required placeholder="vous@exemple.com" />
           </div>
 
           <div class="row">
             <label data-i18n="login.passLabel">Mot de passe</label>
-            <input id="password" name="password" type="password" required data-i18n-placeholder="login.passPH" placeholder="••••••••" />
+            <input id="password" name="password" type="password" required placeholder="••••••••" />
           </div>
 
           <button class="btn primary big" type="submit" data-i18n="login.submit">Se connecter</button>
-
-          <!-- ✅ UN SEUL message -->
           <p class="form-msg" id="loginMsg" aria-live="polite"></p>
 
           <p class="fine">
@@ -108,9 +101,9 @@
             <div class="mock-title" data-i18n="login.sideTitle">Accès rapide</div>
           </div>
           <div class="mock-body">
-            <div class="mini-card"><div class="ic">🔮</div><div><b data-i18n="login.side1t">Prévisions</b><small data-i18n="login.side1d">Auto-Model + intervalles</small></div></div>
-            <div class="mini-card"><div class="ic">🚨</div><div><b data-i18n="login.side2t">Alertes</b><small data-i18n="login.side2d">Seuils & anomalies</small></div></div>
-            <div class="mini-card"><div class="ic">📑</div><div><b data-i18n="login.side3t">Rapports</b><small data-i18n="login.side3d">Export & partage</small></div></div>
+            <div class="mini-card"><div class="ic">🔮</div><div><b>Prévisions</b><small>Auto-Model + intervalles</small></div></div>
+            <div class="mini-card"><div class="ic">🚨</div><div><b>Alertes</b><small>Seuils & anomalies</small></div></div>
+            <div class="mini-card"><div class="ic">📑</div><div><b>Rapports</b><small>Export & partage</small></div></div>
           </div>
         </div>
       </div>
@@ -131,9 +124,8 @@
     </div>
   </footer>
 
-  <!-- ✅ app.js (lang/time) puis login.js (submit) -->
-   <script src="/login.js"></script>
+  <!-- IMPORTANT : app.js peut rester pour l'UI, mais il ne doit PAS gérer login/signup -->
   <script src="app.js"></script>
-  
+  <script src="/login.js"></script>
 </body>
 </html>
