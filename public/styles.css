@@ -118,12 +118,26 @@ a{ color: inherit; text-decoration: none; }
   justify-content: space-between;
   gap: 14px;
 }
-.brand{ display:flex; align-items:center; gap:12px; }
-.logo img,
-.logo svg{
-  height: auto;
-  width: 100px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.logo-img{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
   display: block;
+}
+
+.brand .brand-text{
+  font-weight: 800;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .brand-text{ display:flex; flex-direction:column; line-height:1.1; }
 .brand-text b{ font-size: 1.05rem; }
@@ -948,27 +962,86 @@ h1, .section-head h2{
   }
 }
 
-@media (max-width: 480px) {
-  h1 { font-size: 40px; line-height: 1.05; }
-  .lead { font-size: 15px; }
-
-  .form {
-    padding: 14px !important;
+/* =========================
+   Mobile Header Fix
+   ========================= */
+@media (max-width: 900px) {
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
   }
 
-  .row input, .row select, .row textarea {
-    font-size: 16px; /* évite zoom iOS */
-  }
-
-  .btn.big {
-    width: 100%;
-  }
-
-  .mock-body .mini-card {
+  .nav-inner {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
   }
 
+  /* On cache le menu desktop */
+  .menu {
+    display: none !important;
+  }
+
+  /* Zone logo: pas trop grande */
+  .brand {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Zone boutons: compact */
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  /* Boutons plus petits */
+  .nav-cta .btn {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 14px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Sur mobile, on garde 2 boutons max */
+  .nav-cta .btn.primary {
+    padding: 10px 12px;
+  }
+
+  /* Si tu as un 3e bouton (ex: "Créer un compte"), on le cache */
+  .nav-cta .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img{
+    width: 30px;
+    height: 30px;
+  }
+
+  .brand .brand-text{
+    font-size: 14px;
+  }
+
+  /* On réduit encore un peu */
+  .nav-cta .btn {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .live-strip {
+    font-size: 12px;
+  }
   .marquee-wrap {
-    overflow: hidden;
+    display: none; /* cache le défilement */
   }
 }
