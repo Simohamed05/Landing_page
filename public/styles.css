@@ -1037,11 +1037,69 @@ h1, .section-head h2{
   }
 }
 
-@media (max-width: 480px) {
-  .live-strip {
-    font-size: 12px;
+ /* ===== Mobile navbar fixes ===== */
+.logo-img{
+  height: 34px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 768px){
+  .nav-inner{
+    gap: 10px;
+    padding: 10px 12px;
   }
-  .marquee-wrap {
-    display: none; /* cache le défilement */
+
+  /* cache le menu desktop */
+  .menu{
+    display: none !important;
+  }
+
+  /* on évite la ligne de 4 boutons qui déborde */
+  .nav-cta{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* garder juste 1-2 actions max en top bar */
+  .nav-cta .btn.primary,
+  .nav-cta a.btn.ghost{
+    display: none;
+  }
+
+  /* garder le bouton langue + connexion (ou juste langue) */
+  .nav-cta .link{
+    display: inline-flex;
+  }
+
+  /* le hamburger doit être visible */
+  .hamburger{
+    display: inline-flex;
+    margin-left: 6px;
+  }
+
+  /* hero spacing */
+  .hero{
+    padding-top: 16px;
+  }
+
+  .hero-grid{
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .hero-actions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-actions .btn{
+    width: 100%;
+    justify-content: center;
+  }
+
+  .kpis{
+    grid-template-columns: 1fr !important;
   }
 }
