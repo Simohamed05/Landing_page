@@ -758,3 +758,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   applyLang(localStorage.getItem("lang") || "fr");
 });
+
+// Mobile menu toggle (hamburger)
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  if (!hamburger || !mobileMenu) return;
+
+  const close = () => {
+    mobileMenu.classList.remove("open");
+    hamburger.setAttribute("aria-expanded", "false");
+  };
+
+  hamburger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isOpen = mobileMenu.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+
+  mobileMenu.addEventListener("click", (e) => {
+    // ferme quand on clique sur un lien
+    if (e.target.closest("a")) close();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) close();
+  });
+});

@@ -1,22 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signupForm");
   const msg = document.getElementById("signupMsg");
-  const btn = document.getElementById("signupBtn");
+  const submitBtn = form?.querySelector('button[type="submit"]');
 
-  if (!form || !msg) return;
+  if (!form) return;
 
   const setMsg = (text = "", type = "") => {
+    if (!msg) return;
     msg.textContent = text;
     msg.classList.remove("error", "success");
     if (type) msg.classList.add(type);
   };
 
-  let isSubmitting = false;
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (isSubmitting) return; // anti double submit
-    isSubmitting = true;
 
     const fd = new FormData(form);
     const name = String(fd.get("name") || "").trim();
@@ -24,21 +21,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = String(fd.get("password") || "");
     const password2 = String(fd.get("password2") || "");
 
-    if (password.length < 6) {
-      setMsg("Password must be at least 6 characters.", "error");
-      isSubmitting = false;
+    if (!email || password.length < 6) {
+      setMsg("Invalid email or password too short (min 6).", "error");
       return;
     }
     if (password !== password2) {
       setMsg("Passwords do not match.", "error");
-      isSubmitting = false;
       return;
     }
 
-    try {
-      setMsg("Creating account...", "");
-      if (btn) btn.disabled = true;
+    // anti double-submit (IMPORTANT pour éviter "email already used" à la 1ère fois)
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = "0.7";
+    }
+    setMsg("Creating account...");
 
+    try {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -48,24 +47,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || !data.ok) {
-        // 409 = email existe déjà
-        setMsg(data.message || "Signup failed", "error");
-        isSubmitting = false;
-        if (btn) btn.disabled = false;
+        // 409 = email déjà utilisé
+        if (res.status === 409) {
+          setMsg("Email already used.", "error");
+        } else {
+          setMsg(data.message || "Signup failed", "error");
+        }
         return;
       }
 
       setMsg("Account created! Redirecting...", "success");
-
-      // redirect vers streamlit
-      window.location.replace("https://ventespro.streamlit.app");
+      window.location.assign("https://ventespro.streamlit.app");
     } catch (err) {
-      console.error(err);
       setMsg("Network error", "error");
+      console.error(err);
     } finally {
-      // si on n'a pas redirect (en cas d'erreur)
-      isSubmitting = false;
-      if (btn) btn.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+      }
     }
   });
 });
