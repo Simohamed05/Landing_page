@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 
 export async function sendDemoAutoReply({ to, name, business }) {
   const transporter = nodemailer.createTransport({
+    
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
     secure: false, // true seulement pour port 465
@@ -10,6 +11,8 @@ export async function sendDemoAutoReply({ to, name, business }) {
       pass: process.env.SMTP_PASS,
     },
   });
+  await transporter.verify();
+
 
   const subject = "Votre démo VentesPro est en cours de préparation 🚀";
   const html = `
