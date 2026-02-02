@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import { sendDemoAutoReply } from "./mailer.js";
 
 
+
 // Par (si vous n'utilisez pas getPool, vous pouvez supprimer la seconde ligne)
 import { db, getPool } from "./db.js";
 
@@ -193,3 +194,7 @@ app.post("/api/demo", async (req, res) => {
 
   res.json({ ok: true, message: "✅ Demande envoyée !" });
 });
+
+// après l’INSERT DB
+sendDemoAutoReply({ to: email, name, business })
+  .catch(err => console.error("Email failed:", err.message));

@@ -1,10 +1,15 @@
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
 
 export async function sendDemoAutoReply({ to, name, business }) {
-  if (!process.env.RESEND_API_KEY) throw new Error("RESEND_API_KEY missing");
-  if (!process.env.FROM_EMAIL) throw new Error("FROM_EMAIL missing");
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false, // true seulement pour port 465
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
 
   const subject = "Votre démo VentesPro est en cours de préparation 🚀";
   const html = `
