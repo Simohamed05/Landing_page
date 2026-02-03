@@ -973,3 +973,16 @@ h1, .section-head h2{
 }
 .mobile-menu.is-open{ display:flex; }
 body.menu-open{ overflow:hidden; }
+@media (max-width: 979px){
+  .nav-cta .link,
+  .nav-cta a.btn,
+  .nav-cta .langToggle{ display:none !important; }
+
+  .logo img, .logo svg{ width: 88px; }
+  .nav-inner{ gap: 10px; }
+  .nav-cta{ gap: 8px; }
+}
+@media (max-width: 420px){
+  .logo img, .logo svg{ width: 78px; }
+  .hamburger{ width: 40px; height: 40px; }
+}
