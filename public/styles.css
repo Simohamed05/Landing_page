@@ -986,3 +986,54 @@ body.menu-open{ overflow:hidden; }
   .logo img, .logo svg{ width: 78px; }
   .hamburger{ width: 40px; height: 40px; }
 }
+/* ===== NAVBAR MOBILE CLEAN ===== */
+@media (max-width: 979px){
+
+  .nav-inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .nav-cta{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* bouton langue */
+  .langToggle{
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+  }
+
+  /* bouton demo version mobile */
+  .btn-demo-mobile{
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 999px;
+    background: linear-gradient(135deg,#6d5dfc,#9b8cff);
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  /* hamburger */
+  .hamburger{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    border: none;
+    font-size: 18px;
+  }
+
+  /* cacher les gros boutons desktop */
+  .nav-cta .btn:not(.btn-demo-mobile){
+    display: none;
+  }
+}
