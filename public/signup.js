@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signupForm");
   const msg = document.getElementById("signupMsg");
