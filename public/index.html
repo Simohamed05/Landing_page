@@ -530,5 +530,37 @@
   </footer>
 
   <script src="app.js"></script>
+
+<script>
+/* === MOBILE MENU (hamburger) === */
+(function () {
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (!hamburger || !mobileMenu) return;
+
+  function setOpen(open) {
+    mobileMenu.classList.toggle('is-open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.classList.toggle('menu-open', open);
+  }
+
+  hamburger.addEventListener('click', function () {
+    const open = !mobileMenu.classList.contains('is-open');
+    setOpen(open);
+  });
+
+  // Close after click on a link (better UX)
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+
+  // Close when switching back to desktop
+  window.addEventListener('resize', function () {
+    if (window.innerWidth >= 980) setOpen(false);
+  });
+})();
+</script>
+
 </body>
 </html>
