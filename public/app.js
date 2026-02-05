@@ -727,6 +727,386 @@ document.addEventListener("DOMContentLoaded", () => {
       rights: "All rights reserved."
     }
   };
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (scrollProgress) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      scrollProgress.style.width = scrollPercent + '%';
+    }, { passive: true });
+  }
+
+  // ==========================================
+  // 2. CURSOR GLOW EFFECT
+  // ==========================================
+  const cursorGlow = document.querySelector('.cursor-glow');
+    if (cursorGlow && !window.matchMedia('(pointer: coarse)').matches) {
+      let mouseX = 50;
+      let mouseY = 50;
+      let currentX = 50;
+      let currentY = 50;
+      
+      document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 100;
+        mouseY = (e.clientY / window.innerHeight) * 100;
+      }, { passive: true });
+      
+      function animateCursor() {
+        currentX += (mouseX - currentX) * 0.1;
+        currentY += (mouseY - currentY) * 0.1;
+        
+        document.documentElement.style.setProperty('--mouseX', currentX + '%');
+        document.documentElement.style.setProperty('--mouseY', currentY + '%');
+        
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+    }
+
+    // ==========================================
+    // 3. PARALLAX EFFECT (Hero Background)
+    // ==========================================
+    const heroBg = document.querySelector('.hero-bg');
+    if (heroBg && !window.matchMedia('(pointer: coarse)').matches) {
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        
+        document.documentElement.style.setProperty('--parallaxX', x + 'px');
+        document.documentElement.style.setProperty('--parallaxY', y + 'px');
+      }, { passive: true });
+    }
+
+    // ==========================================
+    // 4. GSAP SCROLL REVEAL ANIMATIONS
+    // ==========================================
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero elements entrance
+      const heroElements = document.querySelectorAll('.hero-grid > .reveal');
+      gsap.fromTo(heroElements, 
+        { opacity: 0, y: 40 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1, 
+          stagger: 0.2,
+          ease: "power3.out",
+          delay: 0.3
+        }
+      );
+
+      // KPIs stagger animation
+      const kpis = document.querySelectorAll('.kpi');
+      gsap.fromTo(kpis,
+        { opacity: 0, y: 30, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "back.out(1.7)",
+          delay: 0.8
+        }
+      );
+
+      // Section headers
+      const sectionHeads = document.querySelectorAll('.section-head');
+      sectionHeads.forEach(head => {
+        gsap.fromTo(head,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: head,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+
+      // Features grid stagger
+      const features = document.querySelectorAll('.feature');
+      features.forEach((feature, index) => {
+        gsap.fromTo(feature,
+          { opacity: 0, y: 40, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: feature,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            },
+            delay: index * 0.1
+          }
+        );
+      });
+
+      // Models grid stagger
+      const models = document.querySelectorAll('.model');
+      models.forEach((model, index) => {
+        gsap.fromTo(model,
+          { opacity: 0, y: 40, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: model,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            },
+            delay: index * 0.1
+          }
+        );
+      });
+
+      // Steps stagger
+      const steps = document.querySelectorAll('.step');
+      steps.forEach((step, index) => {
+        gsap.fromTo(step,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: step,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            },
+            delay: index * 0.12
+          }
+        );
+      });
+
+      // CTA section
+      const cta = document.querySelector('.cta');
+      if (cta) {
+        gsap.fromTo(cta,
+          { opacity: 0, y: 50, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: cta,
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+
+      // Form reveal
+      const form = document.querySelector('.form');
+      if (form) {
+        gsap.fromTo(form,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: form,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+
+      // Mock parallax on scroll
+      const mock = document.querySelector('.mock');
+      if (mock) {
+        gsap.to(mock, {
+          y: -30,
+          ease: "none",
+          scrollTrigger: {
+            trigger: '.hero',
+            start: "top top",
+            end: "bottom top",
+            scrub: 1
+          }
+        });
+      }
+
+    } else {
+      // Fallback si GSAP n'est pas chargé
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    // ==========================================
+    // 5. 3D TILT EFFECT
+    // ==========================================
+    const tiltElements = document.querySelectorAll('.card-tilt');
+    
+    if (!window.matchMedia('(pointer: coarse)').matches) {
+      tiltElements.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = (y - centerY) / 10;
+          const rotateY = (centerX - x) / 10;
+          
+          el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+      });
+    }
+
+    // ==========================================
+    // 6. MAGNETIC EFFECT
+    // ==========================================
+    const magneticElements = document.querySelectorAll('.magnetic');
+    
+    if (!window.matchMedia('(pointer: coarse)').matches) {
+      magneticElements.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          
+          el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          el.style.transform = 'translate(0, 0)';
+        });
+      });
+    }
+
+    // ==========================================
+    // 7. LIVE TIME UPDATE
+    // ==========================================
+    const liveTime = document.getElementById('liveTime');
+    if (liveTime) {
+      function updateTime() {
+        const now = new Date();
+        liveTime.textContent = now.toLocaleTimeString('fr-FR', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          second: '2-digit'
+        });
+      }
+      updateTime();
+      setInterval(updateTime, 1000);
+    }
+
+    // ==========================================
+    // 8. MOBILE MENU
+    // ==========================================
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.contains('is-open');
+        mobileMenu.classList.toggle('is-open');
+        hamburger.setAttribute('aria-expanded', !isOpen);
+        document.body.classList.toggle('menu-open', !isOpen);
+      });
+      
+      // Fermer au clic sur un lien
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('is-open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    }
+
+    // ==========================================
+    // 9. TOOLTIP
+    // ==========================================
+    const tooltip = document.getElementById('tooltip');
+    const tooltipTriggers = document.querySelectorAll('[data-tooltip]');
+    
+    if (tooltip && tooltipTriggers.length > 0) {
+      tooltipTriggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', (e) => {
+          tooltip.textContent = trigger.getAttribute('data-tooltip');
+          tooltip.setAttribute('aria-hidden', 'false');
+          tooltip.style.opacity = '1';
+          tooltip.style.transform = 'translate3d(0, 0, 0)';
+        });
+        
+        trigger.addEventListener('mousemove', (e) => {
+          tooltip.style.left = e.clientX + 15 + 'px';
+          tooltip.style.top = e.clientY + 15 + 'px';
+        });
+        
+        trigger.addEventListener('mouseleave', () => {
+          tooltip.setAttribute('aria-hidden', 'true');
+          tooltip.style.opacity = '0';
+          tooltip.style.transform = 'translate3d(0, 10px, 0)';
+        });
+      });
+    }
+
+    // ==========================================
+    // 10. YEAR UPDATE
+    // ==========================================
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) {
+      yearSpan.textContent = new Date().getFullYear();
+    }
+
+    // ==========================================
+    // 11. LANGUAGE TOGGLE
+    // ==========================================
+    const langBtns = document.querySelectorAll('.langToggle, #langBtn');
+    let currentLang = 'fr';
+    
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentLang = currentLang === 'fr' ? 'en' : 'fr';
+        document.documentElement.lang = currentLang;
+        
+        // Mettre à jour le texte des boutons
+        langBtns.forEach(b => b.textContent = currentLang === 'fr' ? 'EN' : 'FR');
+        
+        // Ici vous pouvez ajouter la logique de traduction
+        console.log('Language switched to:', currentLang);
+      });
+    });
+
+
 
   function applyLang(lang) {
     const pack = dict[lang] || dict.fr;
