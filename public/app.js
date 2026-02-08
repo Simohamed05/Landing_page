@@ -1281,3 +1281,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 })();
+
+const inputEl = document.getElementById("chatInput");
+const sendBtn = document.getElementById("chatSend");
+const messagesEl = document.getElementById("chatMessages");
+
+sendBtn.addEventListener("click", sendMessage);
+
+async function sendMessage() {
+  const userInput = inputEl.value.trim(); // ✅ ICI
+
+  if (!userInput) return;
+
+  // afficher message user
+  messagesEl.innerHTML += `<div class="user-msg">${userInput}</div>`;
+  inputEl.value = "";
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: userInput,            // ✅ envoyé au backend
+        page: window.location.pathname // optionnel
+      })
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      messagesEl.innerHTML += `<div class="bot-msg error">Erreur réseau. Réessayez.</div>`;
+      return;
+    }
+
+    messagesEl.innerHTML += `<div class="bot-msg">${data.reply}</div>`;
+  } catch (err) {
+    console.error(err);
+    messagesEl.innerHTML += `<div class="bot-msg error">Erreur serveur</div>`;
+  }
+}

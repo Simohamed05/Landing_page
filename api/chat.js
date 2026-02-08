@@ -1,60 +1,53 @@
+// api/chat.js
 import OpenAI from "openai";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const INSTRUCTIONS = `
-You are "VentesPro Assistant" for the VentesPro landing page.
-Goal: answer questions about VentesPro (features, demo, pricing, security, onboarding).
-Be concise, helpful, and professional.
-If user asks something unrelated, politely redirect to VentesPro topics.
-Never request sensitive data (passwords, bank info).
-If user asks for account issues, suggest using the login/signup pages or contacting support.
-`;
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ ok: false, message: "Method not allowed" });
+  // CORS (optionnel)
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, message: "Method not allowed" });
+  }
 
   try {
-    const { message = "", history = [] } = req.body || {};
-    const userText = String(message).trim();
-    if (!userText) return res.status(400).json({ ok: false, message: "Message required" });
+    // ✅ ICI : on lit depuis req.body, pas userInput
+    const { message, page } = req.body || {};
+    const userMsg = String(message || "").trim();
 
-    // Limit history size (avoid huge payloads)
-    const safeHistory = Array.isArray(history) ? history.slice(-8) : [];
+    if (!userMsg) return res.status(400).json({ ok: false, message: "Empty message" });
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ ok: false, message: "OPENAI_API_KEY missing" });
+    }
 
-    const input = [
-      ...safeHistory.map(m => ({
-        role: m.role === "assistant" ? "assistant" : "user",
-        content: String(m.content || "").slice(0, 2000)
-      })),
-      { role: "user", content: userText }
-    ];
+    const model = process.env.OPENAI_MODEL || "gpt-5";
 
     const response = await client.responses.create({
-      model: "gpt-5",
-      instructions: INSTRUCTIONS,
-      input
+      model,
+      input: [
+        {
+          role: "system",
+          content:
+            "You are VentesPro Assistant. Answer briefly and clearly in French. Help with demo, login, signup, features."
+        },
+        {
+          role: "user",
+          content: `Page: ${page || "unknown"}\nQuestion: ${userMsg}`
+        }
+      ]
     });
 
-    return res.status(200).json({ ok: true, reply: response.output_text || "" });
-  } catch (e) {
-    return res.status(500).json({ ok: false, message: "Server error", detail: e.message });
+    return res.status(200).json({ ok: true, reply: response.output_text });
+  } catch (err) {
+    console.error("CHAT API ERROR:", err);
+    return res.status(500).json({
+      ok: false,
+      message: "Server error",
+      detail: err?.message || String(err)
+    });
   }
 }
-const res = await fetch("/api/chat", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    message: userInput,
-    page: location.pathname
-  })
-});
-
-const data = await res.json();
-
-if (!res.ok || !data.ok) {
-  showBot("Erreur réseau. Réessayez.");
-} else {
-  showBot(data.reply);
-}
-
