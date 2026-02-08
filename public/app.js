@@ -557,230 +557,294 @@ function initMobileMenu(){
    I18N FR/EN for main index page
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const dict = {
-    fr: {
-      // NAV
-      nav_features: "Fonctionnalités",
-      nav_how: "Fonctionnement",
-      nav_models: "Modèles IA",
-      nav_reports: "Rapports",
-      nav_contact: "Contact",
-      btn_login: "Connexion",
-      btn_signup: "Créer un compte",
-      btn_demo: "Demander une démo",
-      // HERO
-      hero_pill: "Plateforme intelligente de prévision & analyse des ventes",
-      hero_h1_a: "Transforme ton historique de ventes en",
-      hero_h1_b: "prévisions fiables",
-      hero_h1_c: "alertes intelligentes",
-      hero_h1_d: "et décisions data-driven.",
-      hero_lead:
-        "VentesPro est une application web avancée basée sur l’IA & le Machine Learning. Import CSV/Excel → analyse → prévision → alertes → rapports exportables, via une interface claire et interactive.",
-      hero_cta_try: "Essayer VentesPro",
-      hero_cta_how: "Voir comment ça marche",
-      kpi_1: "Comparaison automatique des modèles",
-      kpi_2: "Import & configuration dynamique",
-      kpi_3: "Seuils & anomalies détectées",
-      // MOCK
-      mock_title: "VentesPro Dashboard",
-      mock_data_title: "Données",
-      mock_data_sub: "Import & nettoyage",
-      mock_dash_title: "Dashboard",
-      mock_dash_sub: "Vue globale",
-      mock_ai_title: "Prévisions IA",
-      mock_ai_sub: "Auto-Model",
-      mock_alert_title: "Alertes",
-      mock_alert_sub: "Seuils & risques",
-      mock_graph_title: "Prévision (intervalle de confiance)",
-      tag_mae: "MAE",
-      tag_rmse: "RMSE",
-      tag_season: "Saisonnalité",
-      tag_anom: "Anomalies",
-      // FEATURES
-      feat_head_h2: "Tout le workflow ventes, dans une seule plateforme",
-      feat_head_p: "Import → préparation → analyse → prévision → alertes → rapports. Simple, rapide, data-driven.",
-      feat_1_h3: "Gestion & préparation des données",
-      feat_1_p: "Import CSV/Excel, mapping colonnes (dates, quantités, catégories), nettoyage, agrégation & structuration temporelle.",
-      feat_2_h3: "Tableau de bord interactif",
-      feat_2_p: "Évolution des ventes, moyennes, saisonnalité (jours/mois forts), KPI, tendances — comprendre le passé avant de prévoir.",
-      feat_3_h3: "Alertes intelligentes",
-      feat_3_p: "Définis des seuils de variation (hausse/baisse). Détection d’anomalies et alertes visuelles pour réagir vite.",
-      // HOW
-      how_h2: "Comment ça marche",
-      how_p: "Un parcours fluide, pensé pour la prise de décision stratégique.",
-      step1_h3: "Importer & configurer",
-      step1_p: "Charge tes données (CSV/Excel) et mappe les colonnes (date, quantité, catégorie…).",
-      step2_h3: "Analyser & comprendre",
-      step2_p: "Stats, distributions, corrélations, moyennes mobiles, saisonnalité — révèle les patterns cachés.",
-      step3_h3: "Prévoir avec l’IA",
-      step3_p: "Mode Auto compare MAE/RMSE et sélectionne le modèle le plus fiable, avec intervalle de confiance.",
-      step4_h3: "Déclencher des alertes",
-      step4_p: "Seuils (hausse/baisse), anomalies, notifications visuelles — anticipe risques et opportunités.",
-      step5_h3: "Exporter des rapports",
-      step5_p: "Rapports synthétiques et partageables pour stock, planification commerciale et objectifs.",
-      // MODELS
-      models_h2: "Prévisions IA : plusieurs familles de modèles",
-      models_p: "Statistiques, Machine Learning, modèles avancés — avec sélection automatique du meilleur.",
-      stat_h3: "Statistiques",
-      ml_h3: "Machine Learning",
-      adv_h3: "Avancés",
-      chip_robust: "Robustes",
-      chip_flex: "Flexible",
-      chip_smart: "Smart",
-      // REPORTS
-      reports_h2: "Rapports & aide à la décision",
-      reports_p:
-        "Génère des rapports synthétiques exportables pour suivre la performance, partager les résultats, optimiser le stock, la planification commerciale et les objectifs de vente.",
-      badge_insights: "📌 Insights",
-      badge_export: "📤 Export",
-      badge_trends: "📈 Trends",
-      goal_title: "Objectif",
-      goal_sub: "Démocratiser la data science appliquée aux ventes",
-      meter_rel: "Fiabilité",
-      meter_cla: "Clarté",
-      meter_pro: "Proactivité",
-      // CONTACT
-      contact_h2: "Demander une démo",
-      contact_p: "Dis-moi ton secteur et ton type de données — je t’aide à configurer VentesPro rapidement.",
-      form_name_label: "Nom",
-      form_email_label: "Email",
-      form_business_label: "Type de business",
-      form_msg_label: "Message",
-      form_send: "Envoyer",
-      form_note: "* Démo gratuite — réponse rapide.",
-      form_business_choose: "Choisir…",
-      form_business_ecom: "E-commerce",
-      form_business_retail: "Retail",
-      form_business_wholesale: "Grossiste",
-      form_business_other: "Autre",
-      // Placeholders
-      form_name_ph: "Votre nom",
-      form_email_ph: "vous@exemple.com",
-      form_msg_ph: "Ex : je veux prévoir mes ventes par catégorie sur 3 mois…",
-      // FOOTER
-      foot_small: "Prévisions • Analyse • Alertes",
-      foot_link_features: "Fonctionnalités",
-      foot_link_models: "Modèles",
-      foot_link_contact: "Contact",
-      rights: "Tous droits réservés."
-    },
+  const I18N = {
+  fr: {
+    // NAV / INDEX
+    nav_features: "Fonctionnalités",
+    nav_how: "Fonctionnement",
+    nav_models: "Modèles IA",
+    nav_reports: "Rapports",
+    nav_contact: "Contact",
+    btn_login: "Connexion",
+    btn_signup: "Créer un compte",
+    btn_demo: "Demander une démo",
 
-    en: {
-      // NAV
-      nav_features: "Features",
-      nav_how: "How it works",
-      nav_models: "AI Models",
-      nav_reports: "Reports",
-      nav_contact: "Contact",
-      btn_login: "Sign in",
-      btn_signup: "Create account",
-      btn_demo: "Request a demo",
-      // HERO
-      hero_pill: "Smart platform for sales forecasting & analytics",
-      hero_h1_a: "Turn your sales history into",
-      hero_h1_b: "reliable forecasts",
-      hero_h1_c: "smart alerts",
-      hero_h1_d: "and data-driven decisions.",
-      hero_lead:
-        "VentesPro is an advanced web app powered by AI & Machine Learning. Import CSV/Excel → analyze → forecast → alerts → exportable reports, with a clear and interactive interface.",
-      hero_cta_try: "Try VentesPro",
-      hero_cta_how: "See how it works",
-      kpi_1: "Automatic model comparison",
-      kpi_2: "Import & dynamic setup",
-      kpi_3: "Thresholds & anomalies detected",
-      // MOCK
-      mock_title: "VentesPro Dashboard",
-      mock_data_title: "Data",
-      mock_data_sub: "Import & cleaning",
-      mock_dash_title: "Dashboard",
-      mock_dash_sub: "Overview",
-      mock_ai_title: "AI Forecasts",
-      mock_ai_sub: "Auto-Model",
-      mock_alert_title: "Alerts",
-      mock_alert_sub: "Thresholds & risks",
-      mock_graph_title: "Forecast (confidence interval)",
-      tag_mae: "MAE",
-      tag_rmse: "RMSE",
-      tag_season: "Seasonality",
-      tag_anom: "Anomalies",
-      // FEATURES
-      feat_head_h2: "Your entire sales workflow in one platform",
-      feat_head_p: "Import → prep → analysis → forecasting → alerts → reports. Simple, fast, data-driven.",
-      feat_1_h3: "Data preparation & management",
-      feat_1_p: "Import CSV/Excel, column mapping (dates, quantities, categories), cleaning, aggregation & time structuring.",
-      feat_2_h3: "Interactive dashboard",
-      feat_2_p: "Sales over time, averages, seasonality (best days/months), KPIs, trends — understand the past before forecasting.",
-      feat_3_h3: "Smart alerts",
-      feat_3_p: "Set change thresholds (up/down). Detect anomalies and show visual alerts to react fast.",
-      // HOW
-      how_h2: "How it works",
-      how_p: "A smooth journey designed for better decision-making.",
-      step1_h3: "Import & configure",
-      step1_p: "Upload your data (CSV/Excel) and map columns (date, quantity, category…).",
-      step2_h3: "Analyze & understand",
-      step2_p: "Stats, distributions, correlations, moving averages, seasonality — uncover hidden patterns.",
-      step3_h3: "Forecast with AI",
-      step3_p: "Auto mode compares MAE/RMSE and selects the most reliable model, with confidence intervals.",
-      step4_h3: "Trigger alerts",
-      step4_p: "Thresholds (up/down), anomalies, visual notifications — anticipate risks and opportunities.",
-      step5_h3: "Export reports",
-      step5_p: "Shareable summary reports for inventory, planning, and targets.",
-      // MODELS
-      models_h2: "AI forecasting: multiple model families",
-      models_p: "Statistics, Machine Learning, advanced models — with automatic best-model selection.",
-      stat_h3: "Statistical",
-      ml_h3: "Machine Learning",
-      adv_h3: "Advanced",
-      chip_robust: "Robust",
-      chip_flex: "Flexible",
-      chip_smart: "Smart",
-      // REPORTS
-      reports_h2: "Reports & decision support",
-      reports_p:
-        "Generate exportable summary reports to track performance, share results, and optimize inventory, planning, and sales targets.",
-      badge_insights: "📌 Insights",
-      badge_export: "📤 Export",
-      badge_trends: "📈 Trends",
-      goal_title: "Goal",
-      goal_sub: "Make sales data science accessible",
-      meter_rel: "Reliability",
-      meter_cla: "Clarity",
-      meter_pro: "Proactivity",
-      // CONTACT
-      contact_h2: "Request a demo",
-      contact_p: "Tell us your industry and data type — we’ll help you set up VentesPro quickly.",
-      form_name_label: "Name",
-      form_email_label: "Email",
-      form_business_label: "Business type",
-      form_msg_label: "Message",
-      form_send: "Send",
-      form_note: "* Free demo — quick reply.",
-      form_business_choose: "Choose…",
-      form_business_ecom: "E-commerce",
-      form_business_retail: "Retail",
-      form_business_wholesale: "Wholesale",
-      form_business_other: "Other",
-      // Placeholders
-      form_name_ph: "Your name",
-      form_email_ph: "you@example.com",
-      form_msg_ph: "Example: I want category-level forecasts for the next 3 months…",
-      // FOOTER
-      foot_small: "Forecasting • Analytics • Alerts",
-      foot_link_features: "Features",
-      foot_link_models: "Models",
-      foot_link_contact: "Contact",
-      rights: "All rights reserved."
-    }
-  };
-  const scrollProgress = document.getElementById('scrollProgress');
-  if (scrollProgress) {
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      scrollProgress.style.width = scrollPercent + '%';
-    }, { passive: true });
+    hero_pill: "Plateforme intelligente de prévision & analyse des ventes",
+    hero_h1_a: "Transforme ton historique de ventes en",
+    hero_h1_b: "prévisions fiables",
+    hero_h1_c: "alertes intelligentes",
+    hero_h1_d: "et décisions data-driven.",
+    hero_lead:
+      "VentesPro est une application web avancée basée sur l’IA & le Machine Learning. Import CSV/Excel → analyse → prévision → alertes → rapports exportables, via une interface claire et interactive.",
+    hero_cta_try: "Essayer VentesPro",
+    hero_cta_how: "Voir comment ça marche",
+    kpi_1: "Comparaison automatique des modèles",
+    kpi_2: "Import & configuration dynamique",
+    kpi_3: "Seuils & anomalies détectées",
+
+    mock_title: "VentesPro Dashboard",
+    mock_data_title: "Données",
+    mock_data_sub: "Import & nettoyage",
+    mock_dash_title: "Dashboard",
+    mock_dash_sub: "Vue globale",
+    mock_ai_title: "Prévisions IA",
+    mock_ai_sub: "Auto-Model",
+    mock_alert_title: "Alertes",
+    mock_alert_sub: "Seuils & risques",
+    mock_graph_title: "Prévision (intervalle de confiance)",
+    tag_mae: "MAE",
+    tag_rmse: "RMSE",
+    tag_season: "Saisonnalité",
+    tag_anom: "Anomalies",
+
+    feat_head_h2: "Tout le workflow ventes, dans une seule plateforme",
+    feat_head_p: "Import → préparation → analyse → prévision → alertes → rapports. Simple, rapide, data-driven.",
+    feat_1_h3: "Gestion & préparation des données",
+    feat_1_p: "Import CSV/Excel, mapping colonnes (dates, quantités, catégories), nettoyage, agrégation & structuration temporelle.",
+    feat_2_h3: "Tableau de bord interactif",
+    feat_2_p: "Évolution des ventes, moyennes, saisonnalité (jours/mois forts), KPI, tendances — comprendre le passé avant de prévoir.",
+    feat_3_h3: "Alertes intelligentes",
+    feat_3_p: "Définis des seuils de variation (hausse/baisse). Détection d’anomalies et alertes visuelles pour réagir vite.",
+
+    how_h2: "Comment ça marche",
+    how_p: "Un parcours fluide, pensé pour la prise de décision stratégique.",
+    step1_h3: "Importer & configurer",
+    step1_p: "Charge tes données (CSV/Excel) et mappe les colonnes (date, quantité, catégorie…).",
+    step2_h3: "Analyser & comprendre",
+    step2_p: "Stats, distributions, corrélations, moyennes mobiles, saisonnalité — révèle les patterns cachés.",
+    step3_h3: "Prévoir avec l’IA",
+    step3_p: "Mode Auto compare MAE/RMSE et sélectionne le modèle le plus fiable, avec intervalle de confiance.",
+    step4_h3: "Déclencher des alertes",
+    step4_p: "Seuils (hausse/baisse), anomalies, notifications visuelles — anticipe risques et opportunités.",
+    step5_h3: "Exporter des rapports",
+    step5_p: "Rapports synthétiques et partageables pour stock, planification commerciale et objectifs.",
+
+    models_h2: "Prévisions IA : plusieurs familles de modèles",
+    models_p: "Statistiques, Machine Learning, modèles avancés — avec sélection automatique du meilleur.",
+    stat_h3: "Statistiques",
+    ml_h3: "Machine Learning",
+    adv_h3: "Avancés",
+    chip_robust: "Robustes",
+    chip_flex: "Flexible",
+    chip_smart: "Smart",
+
+    reports_h2: "Rapports & aide à la décision",
+    reports_p:
+      "Génère des rapports synthétiques exportables pour suivre la performance, partager les résultats, optimiser le stock, la planification commerciale et les objectifs de vente.",
+    badge_insights: "📌 Insights",
+    badge_export: "📤 Export",
+    badge_trends: "📈 Trends",
+    goal_title: "Objectif",
+    goal_sub: "Démocratiser la data science appliquée aux ventes",
+    meter_rel: "Fiabilité",
+    meter_cla: "Clarté",
+    meter_pro: "Proactivité",
+
+    contact_h2: "Demander une démo",
+    contact_p: "Dis-moi ton secteur et ton type de données — je t’aide à configurer VentesPro rapidement.",
+    form_name_label: "Nom",
+    form_email_label: "Email",
+    form_business_label: "Type de business",
+    form_msg_label: "Message",
+    form_send: "Envoyer",
+    form_note: "* Démo gratuite — réponse rapide.",
+    form_business_choose: "Choisir…",
+    form_business_ecom: "E-commerce",
+    form_business_retail: "Retail",
+    form_business_wholesale: "Grossiste",
+    form_business_other: "Autre",
+
+    form_name_ph: "Votre nom",
+    form_email_ph: "vous@exemple.com",
+    form_msg_ph: "Ex : je veux prévoir mes ventes par catégorie sur 3 mois…",
+
+    // CONTACT SECTION (keys with dots)
+    "contact.pill": "Contact",
+    "contact.title": "Parlons de votre besoin",
+    "contact.desc": "Une question sur VentesPro ? Démo, pricing, intégration… écrivez-nous et on vous répond rapidement.",
+    "contact.emailLabel": "Email",
+    "contact.phoneLabel": "Téléphone",
+    "contact.meetingLabel": "Rendez-vous",
+    "contact.meetingDesc": "Réserver un créneau",
+    "contact.calendlyBtn": "Réserver sur Calendly",
+    "contact.calendlyNote": "Ouvre Calendly dans un nouvel onglet",
+    "contact.nameLabel": "Nom",
+    "contact.namePH": "Votre nom",
+    "contact.emailFieldLabel": "Email",
+    "contact.emailPH": "exemple@exemple.com",
+    "contact.subjectLabel": "Sujet",
+    "contact.subjectPH": "Démo / Pricing / Support…",
+    "contact.messageLabel": "Message",
+    "contact.messagePH": "Expliquez votre besoin...",
+    "contact.submit": "Envoyer",
+
+    foot_small: "Prévisions • Analyse • Alertes",
+    foot_link_features: "Fonctionnalités",
+    foot_link_models: "Modèles",
+    foot_link_contact: "Contact",
+    rights: "Tous droits réservés."
+  },
+
+  en: {
+    nav_features: "Features",
+    nav_how: "How it works",
+    nav_models: "AI Models",
+    nav_reports: "Reports",
+    nav_contact: "Contact",
+    btn_login: "Sign in",
+    btn_signup: "Create account",
+    btn_demo: "Request a demo",
+
+    hero_pill: "Smart platform for sales forecasting & analytics",
+    hero_h1_a: "Turn your sales history into",
+    hero_h1_b: "reliable forecasts",
+    hero_h1_c: "smart alerts",
+    hero_h1_d: "and data-driven decisions.",
+    hero_lead:
+      "VentesPro is an advanced web app powered by AI & Machine Learning. Import CSV/Excel → analyze → forecast → alerts → exportable reports, with a clear and interactive interface.",
+    hero_cta_try: "Try VentesPro",
+    hero_cta_how: "See how it works",
+    kpi_1: "Automatic model comparison",
+    kpi_2: "Import & dynamic setup",
+    kpi_3: "Thresholds & anomalies detected",
+
+    mock_title: "VentesPro Dashboard",
+    mock_data_title: "Data",
+    mock_data_sub: "Import & cleaning",
+    mock_dash_title: "Dashboard",
+    mock_dash_sub: "Overview",
+    mock_ai_title: "AI Forecasts",
+    mock_ai_sub: "Auto-Model",
+    mock_alert_title: "Alerts",
+    mock_alert_sub: "Thresholds & risks",
+    mock_graph_title: "Forecast (confidence interval)",
+    tag_mae: "MAE",
+    tag_rmse: "RMSE",
+    tag_season: "Seasonality",
+    tag_anom: "Anomalies",
+
+    feat_head_h2: "Your entire sales workflow in one platform",
+    feat_head_p: "Import → prep → analysis → forecasting → alerts → reports. Simple, fast, data-driven.",
+    feat_1_h3: "Data preparation & management",
+    feat_1_p: "Import CSV/Excel, column mapping (dates, quantities, categories), cleaning, aggregation & time structuring.",
+    feat_2_h3: "Interactive dashboard",
+    feat_2_p: "Sales over time, averages, seasonality (best days/months), KPIs, trends — understand the past before forecasting.",
+    feat_3_h3: "Smart alerts",
+    feat_3_p: "Set change thresholds (up/down). Detect anomalies and show visual alerts to react fast.",
+
+    how_h2: "How it works",
+    how_p: "A smooth journey designed for better decision-making.",
+    step1_h3: "Import & configure",
+    step1_p: "Upload your data (CSV/Excel) and map columns (date, quantity, category…).",
+    step2_h3: "Analyze & understand",
+    step2_p: "Stats, distributions, correlations, moving averages, seasonality — uncover hidden patterns.",
+    step3_h3: "Forecast with AI",
+    step3_p: "Auto mode compares MAE/RMSE and selects the most reliable model, with confidence intervals.",
+    step4_h3: "Trigger alerts",
+    step4_p: "Thresholds (up/down), anomalies, visual notifications — anticipate risks and opportunities.",
+    step5_h3: "Export reports",
+    step5_p: "Shareable summary reports for inventory, planning, and targets.",
+
+    models_h2: "AI forecasting: multiple model families",
+    models_p: "Statistics, Machine Learning, advanced models — with automatic best-model selection.",
+    stat_h3: "Statistical",
+    ml_h3: "Machine Learning",
+    adv_h3: "Advanced",
+    chip_robust: "Robust",
+    chip_flex: "Flexible",
+    chip_smart: "Smart",
+
+    reports_h2: "Reports & decision support",
+    reports_p:
+      "Generate exportable summary reports to track performance, share results, and optimize inventory, planning, and sales targets.",
+    badge_insights: "📌 Insights",
+    badge_export: "📤 Export",
+    badge_trends: "📈 Trends",
+    goal_title: "Goal",
+    goal_sub: "Make sales data science accessible",
+    meter_rel: "Reliability",
+    meter_cla: "Clarity",
+    meter_pro: "Proactivity",
+
+    contact_h2: "Request a demo",
+    contact_p: "Tell us your industry and data type — we’ll help you set up VentesPro quickly.",
+    form_name_label: "Name",
+    form_email_label: "Email",
+    form_business_label: "Business type",
+    form_msg_label: "Message",
+    form_send: "Send",
+    form_note: "* Free demo — quick reply.",
+    form_business_choose: "Choose…",
+    form_business_ecom: "E-commerce",
+    form_business_retail: "Retail",
+    form_business_wholesale: "Wholesale",
+    form_business_other: "Other",
+
+    form_name_ph: "Your name",
+    form_email_ph: "you@example.com",
+    form_msg_ph: "e.g., I want category-level forecasts for 3 months…",
+
+    "contact.pill": "Contact",
+    "contact.title": "Let’s talk about your needs",
+    "contact.desc": "Questions about VentesPro? Demo, pricing, integration… message us and we’ll reply quickly.",
+    "contact.emailLabel": "Email",
+    "contact.phoneLabel": "Phone",
+    "contact.meetingLabel": "Meeting",
+    "contact.meetingDesc": "Book a time slot",
+    "contact.calendlyBtn": "Book on Calendly",
+    "contact.calendlyNote": "Opens Calendly in a new tab",
+    "contact.nameLabel": "Name",
+    "contact.namePH": "Your name",
+    "contact.emailFieldLabel": "Email",
+    "contact.emailPH": "example@example.com",
+    "contact.subjectLabel": "Subject",
+    "contact.subjectPH": "Demo / Pricing / Support…",
+    "contact.messageLabel": "Message",
+    "contact.messagePH": "Tell us what you need...",
+    "contact.submit": "Send",
+
+    foot_small: "Forecasting • Analytics • Alerts",
+    foot_link_features: "Features",
+    foot_link_models: "Models",
+    foot_link_contact: "Contact",
+    rights: "All rights reserved."
   }
+};
+
+function setLanguage(nextLang) {
+  const pack = I18N[nextLang] || I18N.fr;
+  localStorage.setItem("lang", nextLang);
+  document.documentElement.lang = nextLang;
+
+  // Text nodes
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (pack[key]) el.textContent = pack[key];
+  });
+
+  // Placeholders
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (pack[key]) el.setAttribute("placeholder", pack[key]);
+  });
+
+  // Update ALL language buttons text (show NEXT language)
+  document.querySelectorAll(".langToggle").forEach((btn) => {
+    btn.textContent = nextLang === "fr" ? "EN" : "FR";
+  });
+}
+
+function toggleLanguage() {
+  const current = localStorage.getItem("lang") || "fr";
+  const next = current === "fr" ? "en" : "fr";
+  setLanguage(next);
+}
+
+// Init + listeners (works because app.js is loaded with defer)
+document.querySelectorAll(".langToggle").forEach((btn) => {
+  btn.addEventListener("click", toggleLanguage);
+});
+setLanguage(localStorage.getItem("lang") || "fr");
 
   // ==========================================
   // 2. CURSOR GLOW EFFECT
