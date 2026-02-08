@@ -1390,3 +1390,15 @@ async function sendMessage() {
   );
 }
 }
+// ============================
+// RESET CHAT ON LEAVE
+// ============================
+window.addEventListener("beforeunload", () => {
+  // vider la zone messages
+  const msgs = document.querySelector(".ai-msgs");
+  if (msgs) msgs.innerHTML = "";
+
+  // supprimer toute sauvegarde éventuelle
+  sessionStorage.removeItem("ai_chat");
+  localStorage.removeItem("ai_chat");
+});
