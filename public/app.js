@@ -128,7 +128,6 @@ const translations = {
     "contact.meetingDesc": "Réserver un créneau",
     "contact.calendlyBtn": "Réserver sur Calendly",
     "contact.calendlyNote": "Ouvre Calendly dans un nouvel onglet",
-
     "contact.nameLabel": "Nom",
     "contact.namePH": "Votre nom",
     "contact.emailFieldLabel": "Email",
@@ -137,7 +136,8 @@ const translations = {
     "contact.subjectPH": "Démo / Pricing / Support…",
     "contact.messageLabel": "Message",
     "contact.messagePH": "Expliquez votre besoin...",
-    "contact.submit": "Envoyer"
+    "contact.submit": "Envoyer",
+
 
     
 
@@ -222,6 +222,7 @@ const translations = {
     "signup.side3t": "Reports",
     "signup.side3d": "Export PDF/CSV",
     "contact.pill": "Contact",
+    "contact.pill": "Contact",
     "contact.title": "Let’s talk about your needs",
     "contact.desc": "Questions about VentesPro? Demo, pricing, integration… message us and we’ll reply quickly.",
     "contact.emailLabel": "Email",
@@ -230,7 +231,6 @@ const translations = {
     "contact.meetingDesc": "Book a time slot",
     "contact.calendlyBtn": "Book on Calendly",
     "contact.calendlyNote": "Opens Calendly in a new tab",
-
     "contact.nameLabel": "Name",
     "contact.namePH": "Your name",
     "contact.emailFieldLabel": "Email",
@@ -239,7 +239,9 @@ const translations = {
     "contact.subjectPH": "Demo / Pricing / Support…",
     "contact.messageLabel": "Message",
     "contact.messagePH": "Tell us what you need...",
-    "contact.submit": "Send"
+    "contact.submit": "Send",
+
+
 
     
   }
@@ -1134,21 +1136,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 11. LANGUAGE TOGGLE
     // ==========================================
-    const langBtns = document.querySelectorAll('.langToggle, #langBtn');
-    let currentLang = 'fr';
-    
-    langBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentLang = currentLang === 'fr' ? 'en' : 'fr';
-        document.documentElement.lang = currentLang;
-        
-        // Mettre à jour le texte des boutons
-        langBtns.forEach(b => b.textContent = currentLang === 'fr' ? 'EN' : 'FR');
-        
-        // Ici vous pouvez ajouter la logique de traduction
-        console.log('Language switched to:', currentLang);
+     document.querySelectorAll(".langToggle, #langBtn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const current = localStorage.getItem("lang") || "fr";
+        applyLang(current === "fr" ? "en" : "fr");
       });
     });
+
 
 
 
@@ -1156,23 +1150,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const pack = dict[lang] || dict.fr;
     localStorage.setItem("lang", lang);
     document.documentElement.lang = lang;
+
+    // Texte
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (pack[key]) el.textContent = pack[key];
     });
+
+    // Placeholders ✅ (bug fix)
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
       const k = el.getAttribute("data-i18n-placeholder");
-      if (dict[k]) el.setAttribute("placeholder", dict[k]);
+      if (pack[k]) el.setAttribute("placeholder", pack[k]);
     });
 
-    document.querySelectorAll(".langToggle").forEach((btn) => {
+    // Boutons langue
+    document.querySelectorAll(".langToggle, #langBtn").forEach((btn) => {
       btn.textContent = lang === "fr" ? "EN" : "FR";
     });
-    if (lang === "en") {
-      document.title = "VentesPro — Smart Sales Forecasting & Analytics";
-    } else {
-      document.title = "VentesPro — Prévision & Analyse Intelligente des Ventes";
-    }
   }
 
   document.querySelectorAll(".langToggle").forEach((btn) => {
