@@ -1402,7 +1402,7 @@ window.addEventListener("beforeunload", () => {
   sessionStorage.removeItem("ai_chat");
   localStorage.removeItem("ai_chat");
 });
-
+ 
 const contactForm = document.getElementById("contactForm");
 const contactMsg = document.getElementById("contactMsg");
 
@@ -1413,12 +1413,13 @@ if (contactForm) {
 
     const fd = new FormData(contactForm);
     const payload = Object.fromEntries(fd.entries());
+    payload.page = window.location.pathname;
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -1428,7 +1429,7 @@ if (contactForm) {
         return;
       }
 
-      contactMsg.textContent = "✅ Message envoyé avec succès";
+      contactMsg.textContent = "✅ Message envoyé. Vérifiez votre email.";
       contactForm.reset();
     } catch (err) {
       console.error(err);
