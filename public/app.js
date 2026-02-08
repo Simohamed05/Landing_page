@@ -1139,3 +1139,145 @@ document.addEventListener("DOMContentLoaded", () => {
 
   applyLang(localStorage.getItem("lang") || "fr");
 });
+
+(function initVentesProAI(){
+  const ROBOT_ICON = "/robot.png"; // mets ton icône ici
+
+  const existing = document.getElementById("aiFab");
+  if (existing) return; // déjà injecté
+
+  // Inject HTML
+  const fab = document.createElement("button");
+  fab.id = "aiFab";
+  fab.className = "ai-fab";
+  fab.setAttribute("aria-label", "AI assistant");
+  fab.innerHTML = `<img src="${ROBOT_ICON}" alt="AI" />`;
+  document.body.appendChild(fab);
+
+  const panel = document.createElement("div");
+  panel.id = "aiPanel";
+  panel.className = "ai-panel";
+  panel.setAttribute("aria-hidden", "true");
+  panel.innerHTML = `
+    <div class="ai-head">
+      <div class="ai-title">
+        <b>VentesPro Assistant</b>
+        <small>Réponses instantanées</small>
+      </div>
+      <button class="ai-close" id="aiClose" aria-label="Close">✕</button>
+    </div>
+
+    <div class="ai-suggestions" id="aiSug">
+      <button class="ai-chip" data-q="Quelles sont les fonctionnalités clés de VentesPro ?">Fonctionnalités</button>
+      <button class="ai-chip" data-q="Comment demander une démo ?">Demander une démo</button>
+      <button class="ai-chip" data-q="Est-ce que VentesPro convient aux PME et magasins ?">Pour qui ?</button>
+    </div>
+
+    <div class="ai-msgs" id="aiMsgs"></div>
+
+    <form class="ai-form" id="aiForm">
+      <input id="aiInput" placeholder="Écrivez votre question..." autocomplete="off" />
+      <button type="submit">Envoyer</button>
+    </form>
+  `;
+  document.body.appendChild(panel);
+
+  const closeBtn = panel.querySelector("#aiClose");
+  const msgs = panel.querySelector("#aiMsgs");
+  const form = panel.querySelector("#aiForm");
+  const input = panel.querySelector("#aiInput");
+  const sug = panel.querySelector("#aiSug");
+
+  const LS_KEY = "vp_ai_history_v1";
+
+  const loadHistory = () => {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+    catch { return []; }
+  };
+  const saveHistory = (h) => localStorage.setItem(LS_KEY, JSON.stringify(h.slice(-12)));
+
+  const addBubble = (text, who="bot") => {
+    const div = document.createElement("div");
+    div.className = `ai-bubble ${who === "user" ? "ai-user" : "ai-bot"}`;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  };
+
+  const renderHistory = () => {
+    msgs.innerHTML = "";
+    const h = loadHistory();
+    if (!h.length) {
+      addBubble("Bonjour 👋 Je suis l’assistant VentesPro. Posez votre question ou choisissez une suggestion.", "bot");
+      return;
+    }
+    h.forEach(m => addBubble(m.content, m.role === "assistant" ? "bot" : "user"));
+  };
+
+  const open = () => {
+    panel.style.display = "block";
+    panel.setAttribute("aria-hidden", "false");
+    renderHistory();
+    input.focus();
+  };
+
+  const close = () => {
+    panel.style.display = "none";
+    panel.setAttribute("aria-hidden", "true");
+  };
+
+  fab.addEventListener("click", open);
+  closeBtn.addEventListener("click", close);
+
+  sug.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-q]");
+    if (!btn) return;
+    input.value = btn.getAttribute("data-q");
+    form.dispatchEvent(new Event("submit", { cancelable: true }));
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = (input.value || "").trim();
+    if (!q) return;
+    input.value = "";
+
+    const history = loadHistory();
+    history.push({ role: "user", content: q });
+    saveHistory(history);
+    addBubble(q, "user");
+
+    addBubble("...", "bot");
+    const typingEl = msgs.lastElementChild;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          message: q,
+          history: history.slice(-8) // envoie un petit historique
+        })
+      });
+
+      const data = await res.json().catch(()=> ({}));
+      typingEl.remove();
+
+      if (!res.ok || !data.ok) {
+        addBubble(data.message || "Erreur serveur. Réessayez.", "bot");
+        return;
+      }
+
+      const reply = (data.reply || "").trim() || "Je n’ai pas compris. Pouvez-vous reformuler ?";
+      addBubble(reply, "bot");
+
+      const updated = loadHistory();
+      updated.push({ role: "assistant", content: reply });
+      saveHistory(updated);
+
+    } catch {
+      typingEl.remove();
+      addBubble("Erreur réseau. Réessayez.", "bot");
+    }
+  });
+})();
