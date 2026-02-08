@@ -1313,10 +1313,21 @@ async function sendMessage() {
       messagesEl.innerHTML += `<div class="bot-msg error">Erreur réseau. Réessayez.</div>`;
       return;
     }
+    if (res.status === 429) {
+  addMessage(
+    "⏳ Trop de demandes en même temps. Merci de patienter.",
+    "bot"
+  );
+  return;
+}
+
 
     messagesEl.innerHTML += `<div class="bot-msg">${data.reply}</div>`;
   } catch (err) {
-    console.error(err);
-    messagesEl.innerHTML += `<div class="bot-msg error">Erreur serveur</div>`;
-  }
+  console.error(err);
+  addMessage(
+    "⚠️ Le service est temporairement indisponible. Réessayez dans quelques instants.",
+    "bot"
+  );
+}
 }
