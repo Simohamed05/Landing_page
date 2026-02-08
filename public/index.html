@@ -514,58 +514,7 @@
     </div>
   </section>
 
-
-  <footer class="footer">
-    <div class="container foot">
-      <div>
-        <b>VentesPro</b>
-        <small data-i18n="foot_small">Prévisions • Analyse • Alertes</small>
-      </div>
-      <div class="foot-links">
-        <a href="#features" data-i18n="foot_link_features">Fonctionnalités</a>
-        <a href="#models" data-i18n="foot_link_models">Modèles</a>
-        <a href="#contact" data-i18n="foot_link_contact">Contact</a>
-      </div>
-      <div class="copy">© <span id="year"></span> VentesPro. <span data-i18n="rights">Tous droits réservés.</span></div>
-    </div>
-  </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="app.js"></script>
-
-  <script src="app.js"></script>
-
-<script>
-/* === MOBILE MENU (hamburger) === */
-(function () {
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  if (!hamburger || !mobileMenu) return;
-
-  function setOpen(open) {
-    mobileMenu.classList.toggle('is-open', open);
-    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
-    document.body.classList.toggle('menu-open', open);
-  }
-
-  hamburger.addEventListener('click', function () {
-    const open = !mobileMenu.classList.contains('is-open');
-    setOpen(open);
-  });
-
-  // Close after click on a link (better UX)
-  mobileMenu.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () { setOpen(false); });
-  });
-
-  // Close when switching back to desktop
-  window.addEventListener('resize', function () {
-    if (window.innerWidth >= 980) setOpen(false);
-  });
-})();
-</script>
-<section id="contact" class="contact-section">
+  <section id="contact" class="contact-section">
   <div class="container contact-wrap">
     <div class="contact-left reveal">
       <span class="pill">
@@ -641,6 +590,58 @@
     </div>
   </div>
 </section>
+
+  <footer class="footer">
+    <div class="container foot">
+      <div>
+        <b>VentesPro</b>
+        <small data-i18n="foot_small">Prévisions • Analyse • Alertes</small>
+      </div>
+      <div class="foot-links">
+        <a href="#features" data-i18n="foot_link_features">Fonctionnalités</a>
+        <a href="#models" data-i18n="foot_link_models">Modèles</a>
+        <a href="#contact" data-i18n="foot_link_contact">Contact</a>
+      </div>
+      <div class="copy">© <span id="year"></span> VentesPro. <span data-i18n="rights">Tous droits réservés.</span></div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="app.js"></script>
+
+  <script src="app.js"></script>
+
+<script>
+/* === MOBILE MENU (hamburger) === */
+(function () {
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (!hamburger || !mobileMenu) return;
+
+  function setOpen(open) {
+    mobileMenu.classList.toggle('is-open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.classList.toggle('menu-open', open);
+  }
+
+  hamburger.addEventListener('click', function () {
+    const open = !mobileMenu.classList.contains('is-open');
+    setOpen(open);
+  });
+
+  // Close after click on a link (better UX)
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+
+  // Close when switching back to desktop
+  window.addEventListener('resize', function () {
+    if (window.innerWidth >= 980) setOpen(false);
+  });
+})();
+</script>
+
 
 
 </body>
