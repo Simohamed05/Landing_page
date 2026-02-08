@@ -1,29 +1,40 @@
+
+
 // api/contact.js
 import nodemailer from "nodemailer";
 import { sql } from "./db.js";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST")
     return res.status(405).json({ ok: false, message: "Method not allowed" });
-  }
 
   try {
-    const { name, email, subject, message } = req.body || {};
+    const { name = "", email = "", subject = "", message = "" } = req.body || {};
 
-    if (!name || !email || !subject || !message) {
+    const cleanName = String(name).trim();
+    const cleanEmail = String(email).trim().toLowerCase();
+    const cleanSubject = String(subject).trim();
+    const cleanMessage = String(message).trim();
+
+    if (!cleanName || !cleanEmail || !cleanSubject || !cleanMessage) {
       return res.status(400).json({ ok: false, message: "Missing fields" });
     }
 
-    // 1️⃣ Save DB
+    // 1) Save to DB (contacts table must exist)
     await sql`
       INSERT INTO contacts (name, email, subject, message)
-      VALUES (${name}, ${email}, ${subject}, ${message})
+      VALUES (${cleanName}, ${cleanEmail}, ${cleanSubject}, ${cleanMessage})
     `;
 
-    // 2️⃣ SMTP
+    // 2) SMTP (Gmail)
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
+      port: Number(process.env.SMTP_PORT || 587),
       secure: false,
       auth: {
         user: process.env.SMTP_USER,
@@ -31,10 +42,25 @@ export default async function handler(req, res) {
       },
     });
 
-    // auto-reply
+    const fromEmail = process.env.FROM_EMAIL || process.env.SMTP_USER;
+    const supportEmail = process.env.SUPPORT_EMAIL || process.env.SMTP_USER;
+
+    // Email to YOU
     await transporter.sendMail({
-      from: process.env.FROM_EMAIL,
-      to: email,
+      from: fromEmail,
+      to: supportEmail,
+      subject: `📩 Nouveau message (Contact) — ${cleanSubject}`,
+      text:
+        `Nom: ${cleanName}\n` +
+        `Email: ${cleanEmail}\n` +
+        `Sujet: ${cleanSubject}\n\n` +
+        `Message:\n${cleanMessage}\n`,
+    });
+
+    // Auto reply to user
+    await transporter.sendMail({
+      from: fromEmail,
+      to: cleanEmail,
       subject: "✅ Message reçu — VentesPro",
       html: `
         <div style="font-family: Inter, Arial, sans-serif; line-height:1.6; color:#111827;">
@@ -58,24 +84,13 @@ export default async function handler(req, res) {
       `,
     });
 
-    // admin mail
-    await transporter.sendMail({
-      from: process.env.FROM_EMAIL,
-      to: process.env.SUPPORT_EMAIL,
-      subject: `📩 Nouveau contact — ${subject}`,
-      text: `
-Nom: ${name}
-Email: ${email}
-
-Message:
-${message}
-      `,
+    return res.status(200).json({ ok: true, message: "Message sent" });
+  } catch (err) {
+    console.error("CONTACT ERROR:", err);
+    return res.status(500).json({
+      ok: false,
+      message: "Server error",
+      detail: err?.message || String(err),
     });
-
-    return res.status(200).json({ ok: true });
-
-  } catch (e) {
-    console.error("CONTACT ERROR:", e);
-    return res.status(500).json({ ok: false, message: "Server error" });
   }
 }
