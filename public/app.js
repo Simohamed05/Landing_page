@@ -41,6 +41,7 @@ const $$ = (s, p = document) => [...p.querySelectorAll(s)];
 ---------------------------- */
 const translations = {
   fr: {
+    
     "nav.home": "Accueil",
     "nav.features": "Fonctionnalités",
     "nav.how": "Fonctionnement",
@@ -117,7 +118,30 @@ const translations = {
     "signup.side2t": "Prévisions",
     "signup.side2d": "Meilleur modèle auto",
     "signup.side3t": "Rapports",
-    "signup.side3d": "Export PDF/CSV"
+    "signup.side3d": "Export PDF/CSV",
+    contact: {
+  pill: "Contact",
+  title: "Parlons de votre besoin",
+  desc: "Une question sur VentesPro ? Démo, pricing, intégration… écrivez-nous et on vous répond rapidement.",
+  emailLabel: "Email",
+  phoneLabel: "Téléphone",
+  meetingLabel: "Rendez-vous",
+  meetingDesc: "Réserver un créneau",
+  calendlyBtn: "Réserver sur Calendly",
+  calendlyNote: "Ouvre Calendly dans un nouvel onglet",
+  form: {
+    nameLabel: "Nom",
+    namePH: "Votre nom",
+    emailLabel: "Email",
+    emailPH: "Exemple@exemple.com",
+    subjectLabel: "Sujet",
+    subjectPH: "Démo / Pricing / Support…",
+    messageLabel: "Message",
+    messagePH: "Expliquez votre besoin...",
+    submit: "Envoyer"
+  }
+}
+
   },
 
   en: {
@@ -197,7 +221,30 @@ const translations = {
     "signup.side2t": "Forecasts",
     "signup.side2d": "Auto best model",
     "signup.side3t": "Reports",
-    "signup.side3d": "Export PDF/CSV"
+    "signup.side3d": "Export PDF/CSV",
+    contact: {
+  pill: "Contact",
+  title: "Let’s talk about your needs",
+  desc: "A question about VentesPro? Demo, pricing, integration… write to us and we’ll reply quickly.",
+  emailLabel: "Email",
+  phoneLabel: "Phone",
+  meetingLabel: "Meeting",
+  meetingDesc: "Book a slot",
+  calendlyBtn: "Book on Calendly",
+  calendlyNote: "Opens Calendly in a new tab",
+  form: {
+    nameLabel: "Name",
+    namePH: "Your name",
+    emailLabel: "Email",
+    emailPH: "name@example.com",
+    subjectLabel: "Subject",
+    subjectPH: "Demo / Pricing / Support…",
+    messageLabel: "Message",
+    messagePH: "Tell us what you need...",
+    submit: "Send"
+  }
+}
+    
   }
 };
 
