@@ -222,7 +222,6 @@ const translations = {
     "signup.side3t": "Reports",
     "signup.side3d": "Export PDF/CSV",
     "contact.pill": "Contact",
-    "contact.pill": "Contact",
     "contact.title": "Let’s talk about your needs",
     "contact.desc": "Questions about VentesPro? Demo, pricing, integration… message us and we’ll reply quickly.",
     "contact.emailLabel": "Email",
