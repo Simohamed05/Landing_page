@@ -1402,14 +1402,23 @@ window.addEventListener("beforeunload", () => {
   sessionStorage.removeItem("ai_chat");
   localStorage.removeItem("ai_chat");
 });
- 
-const contactForm = document.getElementById("contactForm");
-const contactMsg = document.getElementById("contactMsg");
+  
+document.addEventListener("DOMContentLoaded", () => {
+  const contactForm = document.getElementById("contactForm");
+  const contactMsg = document.getElementById("contactMsg");
 
-if (contactForm) {
+  if (!contactForm) return;
+
+  console.log("✅ Contact form ready");
+
   contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    contactMsg.textContent = "Envoi en cours…";
+    e.preventDefault(); // ✅ stop refresh
+    e.stopPropagation();
+
+    if (contactMsg) {
+      contactMsg.textContent = "Envoi en cours…";
+      contactMsg.classList.remove("error", "success");
+    }
 
     const fd = new FormData(contactForm);
     const payload = Object.fromEntries(fd.entries());
@@ -1422,18 +1431,28 @@ if (contactForm) {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      console.log("📩 /api/contact:", res.status, data);
 
       if (!res.ok || !data.ok) {
-        contactMsg.textContent = data.message || "Erreur lors de l’envoi";
+        if (contactMsg) {
+          contactMsg.textContent = data.message || "Erreur lors de l’envoi";
+          contactMsg.classList.add("error");
+        }
         return;
       }
 
-      contactMsg.textContent = "✅ Message envoyé. Vérifiez votre email.";
+      if (contactMsg) {
+        contactMsg.textContent = "✅ Message envoyé. Vérifiez votre email.";
+        contactMsg.classList.add("success");
+      }
       contactForm.reset();
     } catch (err) {
       console.error(err);
-      contactMsg.textContent = "❌ Erreur serveur";
+      if (contactMsg) {
+        contactMsg.textContent = "❌ Erreur serveur";
+        contactMsg.classList.add("error");
+      }
     }
   });
-}
+});
