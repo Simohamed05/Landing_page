@@ -41,3 +41,20 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, message: "Server error", detail: e.message });
   }
 }
+const res = await fetch("/api/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: userInput,
+    page: location.pathname
+  })
+});
+
+const data = await res.json();
+
+if (!res.ok || !data.ok) {
+  showBot("Erreur réseau. Réessayez.");
+} else {
+  showBot(data.reply);
+}
+
