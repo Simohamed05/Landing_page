@@ -118,29 +118,28 @@ const translations = {
     "signup.side2t": "Prévisions",
     "signup.side2d": "Meilleur modèle auto",
     "signup.side3t": "Rapports",
-    "signup.side3d": "Export PDF/CSV",
-    contact: {
-  pill: "Contact",
-  title: "Parlons de votre besoin",
-  desc: "Une question sur VentesPro ? Démo, pricing, intégration… écrivez-nous et on vous répond rapidement.",
-  emailLabel: "Email",
-  phoneLabel: "Téléphone",
-  meetingLabel: "Rendez-vous",
-  meetingDesc: "Réserver un créneau",
-  calendlyBtn: "Réserver sur Calendly",
-  calendlyNote: "Ouvre Calendly dans un nouvel onglet",
-  form: {
-    nameLabel: "Nom",
-    namePH: "Votre nom",
-    emailLabel: "Email",
-    emailPH: "Exemple@exemple.com",
-    subjectLabel: "Sujet",
-    subjectPH: "Démo / Pricing / Support…",
-    messageLabel: "Message",
-    messagePH: "Expliquez votre besoin...",
-    submit: "Envoyer"
-  }
-}
+    "signup.side3d": "Export PDF/CSV" ,
+    "contact.pill": "Contact",
+    "contact.title": "Parlons de votre besoin",
+    "contact.desc": "Une question sur VentesPro ? Démo, pricing, intégration… écrivez-nous et on vous répond rapidement.",
+    "contact.emailLabel": "Email",
+    "contact.phoneLabel": "Téléphone",
+    "contact.meetingLabel": "Rendez-vous",
+    "contact.meetingDesc": "Réserver un créneau",
+    "contact.calendlyBtn": "Réserver sur Calendly",
+    "contact.calendlyNote": "Ouvre Calendly dans un nouvel onglet",
+
+    "contact.nameLabel": "Nom",
+    "contact.namePH": "Votre nom",
+    "contact.emailFieldLabel": "Email",
+    "contact.emailPH": "exemple@exemple.com",
+    "contact.subjectLabel": "Sujet",
+    "contact.subjectPH": "Démo / Pricing / Support…",
+    "contact.messageLabel": "Message",
+    "contact.messagePH": "Expliquez votre besoin...",
+    "contact.submit": "Envoyer"
+
+    
 
   },
 
@@ -222,28 +221,26 @@ const translations = {
     "signup.side2d": "Auto best model",
     "signup.side3t": "Reports",
     "signup.side3d": "Export PDF/CSV",
-    contact: {
-  pill: "Contact",
-  title: "Let’s talk about your needs",
-  desc: "A question about VentesPro? Demo, pricing, integration… write to us and we’ll reply quickly.",
-  emailLabel: "Email",
-  phoneLabel: "Phone",
-  meetingLabel: "Meeting",
-  meetingDesc: "Book a slot",
-  calendlyBtn: "Book on Calendly",
-  calendlyNote: "Opens Calendly in a new tab",
-  form: {
-    nameLabel: "Name",
-    namePH: "Your name",
-    emailLabel: "Email",
-    emailPH: "name@example.com",
-    subjectLabel: "Subject",
-    subjectPH: "Demo / Pricing / Support…",
-    messageLabel: "Message",
-    messagePH: "Tell us what you need...",
-    submit: "Send"
-  }
-}
+    "contact.pill": "Contact",
+    "contact.title": "Let’s talk about your needs",
+    "contact.desc": "Questions about VentesPro? Demo, pricing, integration… message us and we’ll reply quickly.",
+    "contact.emailLabel": "Email",
+    "contact.phoneLabel": "Phone",
+    "contact.meetingLabel": "Meeting",
+    "contact.meetingDesc": "Book a time slot",
+    "contact.calendlyBtn": "Book on Calendly",
+    "contact.calendlyNote": "Opens Calendly in a new tab",
+
+    "contact.nameLabel": "Name",
+    "contact.namePH": "Your name",
+    "contact.emailFieldLabel": "Email",
+    "contact.emailPH": "example@example.com",
+    "contact.subjectLabel": "Subject",
+    "contact.subjectPH": "Demo / Pricing / Support…",
+    "contact.messageLabel": "Message",
+    "contact.messagePH": "Tell us what you need...",
+    "contact.submit": "Send"
+
     
   }
 };

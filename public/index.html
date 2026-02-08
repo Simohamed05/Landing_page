@@ -523,6 +523,7 @@
       </span>
 
       <h2 class="contact-title" data-i18n="contact.title">Parlons de votre besoin</h2>
+
       <p class="contact-desc" data-i18n="contact.desc">
         Une question sur VentesPro ? Démo, pricing, intégration… écrivez-nous et on vous répond rapidement.
       </p>
@@ -554,41 +555,74 @@
       </div>
 
       <div id="calendly" class="contact-calendly">
-        <a class="btn primary" href="https://calendly.com/simohamedhadi05/ventespro" target="_blank" rel="noopener"
-           data-i18n="contact.calendlyBtn">
+        <a
+          class="btn primary"
+          href="https://calendly.com/simohamedhadi05/ventespro"
+          target="_blank"
+          rel="noopener"
+          data-i18n="contact.calendlyBtn"
+        >
           Réserver sur Calendly
         </a>
-        <small class="muted" data-i18n="contact.calendlyNote">Ouvre Calendly dans un nouvel onglet</small>
+        <small class="muted" data-i18n="contact.calendlyNote">
+          Ouvre Calendly dans un nouvel onglet
+        </small>
       </div>
     </div>
 
     <div class="contact-right reveal">
-      <form class="contact-form card-tilt" id="contactForm">
+      <form class="contact-form card-tilt" id="contactForm" autocomplete="on" novalidate>
         <div class="row">
-          <label data-i18n="contact.form.nameLabel">Nom</label>
-          <input name="name" required data-i18n-placeholder="contact.form.namePH" placeholder="Votre nom" />
+          <label for="c_name" data-i18n="contact.nameLabel">Nom</label>
+          <input
+            id="c_name"
+            name="name"
+            required
+            autocomplete="name"
+            data-i18n-placeholder="contact.namePH"
+            placeholder="Votre nom"
+          />
         </div>
 
         <div class="row">
-          <label data-i18n="contact.form.emailLabel">Email</label>
-          <input name="email" type="email" required
-                 data-i18n-placeholder="contact.form.emailPH" placeholder="Exemple@exemple.com" />
+          <label for="c_email" data-i18n="contact.emailFieldLabel">Email</label>
+          <input
+            id="c_email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            data-i18n-placeholder="contact.emailPH"
+            placeholder="exemple@exemple.com"
+          />
         </div>
 
         <div class="row">
-          <label data-i18n="contact.form.subjectLabel">Sujet</label>
-          <input name="subject" required
-                 data-i18n-placeholder="contact.form.subjectPH" placeholder="Démo / Pricing / Support…" />
+          <label for="c_subject" data-i18n="contact.subjectLabel">Sujet</label>
+          <input
+            id="c_subject"
+            name="subject"
+            required
+            data-i18n-placeholder="contact.subjectPH"
+            placeholder="Démo / Pricing / Support…"
+          />
         </div>
 
         <div class="row">
-          <label data-i18n="contact.form.messageLabel">Message</label>
-          <textarea name="message" rows="5" required
-                    data-i18n-placeholder="contact.form.messagePH"
-                    placeholder="Expliquez votre besoin..."></textarea>
+          <label for="c_message" data-i18n="contact.messageLabel">Message</label>
+          <textarea
+            id="c_message"
+            name="message"
+            rows="5"
+            required
+            data-i18n-placeholder="contact.messagePH"
+            placeholder="Expliquez votre besoin..."
+          ></textarea>
         </div>
 
-        <button class="btn primary big" type="submit" data-i18n="contact.form.submit">Envoyer</button>
+        <button class="btn primary big" type="submit" data-i18n="contact.submit">
+          Envoyer
+        </button>
         <p class="form-msg" id="contactMsg" aria-live="polite"></p>
       </form>
     </div>
