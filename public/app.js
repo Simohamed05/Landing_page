@@ -1494,3 +1494,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+function setLanguage(nextLang) {
+  const pack = dict[nextLang] || dict.fr;
+  localStorage.setItem("lang", nextLang);
+  document.documentElement.lang = nextLang;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (pack[key]) el.textContent = pack[key];
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (pack[key]) el.setAttribute("placeholder", pack[key]);
+  });
+
+  // تحديث نص زر اللغة: يعرض اللغة التالية
+  document.querySelectorAll(".langToggle, #langBtn").forEach((btn) => {
+    btn.textContent = nextLang === "fr" ? "EN" : "FR";
+  });
+}
+
+function toggleLanguage() {
+  const current = localStorage.getItem("lang") || "fr";
+  const next = current === "fr" ? "en" : "fr";
+  setLanguage(next);
+}
+
+document.querySelectorAll(".langToggle, #langBtn").forEach((btn) => {
+  btn.addEventListener("click", toggleLanguage);
+});
+
+// init on load
+setLanguage(localStorage.getItem("lang") || "fr");
+
