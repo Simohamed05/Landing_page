@@ -1167,11 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <button class="ai-close" id="aiClose" aria-label="Close">✕</button>
     </div>
 
-    <div class="ai-suggestions" id="aiSug">
-      <button class="ai-chip" data-q="Quelles sont les fonctionnalités clés de VentesPro ?">Fonctionnalités</button>
-      <button class="ai-chip" data-q="Comment demander une démo ?">Demander une démo</button>
-      <button class="ai-chip" data-q="Est-ce que VentesPro convient aux PME et magasins ?">Pour qui ?</button>
-    </div>
+    <div class="ai-suggestions" id="aiSug"></div>
 
     <div class="ai-msgs" id="aiMsgs"></div>
 
@@ -1187,6 +1183,57 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = panel.querySelector("#aiForm");
   const input = panel.querySelector("#aiInput");
   const sug = panel.querySelector("#aiSug");
+  const page = (location.pathname || "").toLowerCase();
+
+const suggestionsByPage = {
+  "demo.html": [
+    "Comment demander une démo VentesPro ?",
+    "Quels sont les tarifs / pricing ?",
+    "Comment VentesPro sécurise les données ?"
+  ],
+  "login.html": [
+    "Je n’arrive pas à me connecter, que faire ?",
+    "Comment créer un compte (inscription) ?",
+    "Comment contacter le support VentesPro ?"
+  ],
+  "signup.html": [
+    "Comment créer un compte VentesPro ?",
+    "Pourquoi mon email est déjà utilisé ?",
+    "Que faire après l’inscription ?"
+  ],
+  "admin.html": [
+    "Comment accéder aux statistiques admin ?",
+    "Comment voir la liste des demandes de démo ?",
+    "Comment sécuriser la clé admin ?"
+  ],
+  "index.html": [
+    "Quelles sont les fonctionnalités clés de VentesPro ?",
+    "VentesPro est fait pour qui (PME / magasins) ?",
+    "Comment démarrer rapidement ?"
+  ]
+};
+
+// fallback si page inconnue
+const defaultSug = [
+  "Quelles sont les fonctionnalités de VentesPro ?",
+  "Comment demander une démo ?",
+  "Comment se connecter / créer un compte ?"
+];
+
+function renderSuggestions() {
+  if (!sug) return;
+
+  // détecter la “clé” de page (ex: /demo.html)
+  const key = Object.keys(suggestionsByPage).find(k => page.includes(k));
+  const list = key ? suggestionsByPage[key] : defaultSug;
+
+  sug.innerHTML = list
+    .map(q => `<button class="ai-chip" type="button" data-q="${q.replace(/"/g, "&quot;")}">${q}</button>`)
+    .join("");
+}
+
+renderSuggestions();
+
 
   const LS_KEY = "vp_ai_history_v1";
 
@@ -1236,6 +1283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.dispatchEvent(new Event("submit", { cancelable: true }));
   });
 
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const q = (input.value || "").trim();
@@ -1247,8 +1295,19 @@ document.addEventListener("DOMContentLoaded", () => {
     saveHistory(history);
     addBubble(q, "user");
 
-    addBubble("...", "bot");
-    const typingEl = msgs.lastElementChild;
+    const typing = document.createElement("div");
+    typing.className = "ai-bubble ai-bot";
+    typing.innerHTML = `
+      <span class="ai-typing">
+        <span class="ai-dot"></span>
+        <span class="ai-dot"></span>
+        <span class="ai-dot"></span>
+      </span>
+    `;
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+    const typingEl = typing;
+
 
     try {
       const res = await fetch("/api/chat", {
