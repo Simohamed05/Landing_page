@@ -1402,3 +1402,37 @@ window.addEventListener("beforeunload", () => {
   sessionStorage.removeItem("ai_chat");
   localStorage.removeItem("ai_chat");
 });
+
+const contactForm = document.getElementById("contactForm");
+const contactMsg = document.getElementById("contactMsg");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    contactMsg.textContent = "Envoi en cours…";
+
+    const fd = new FormData(contactForm);
+    const payload = Object.fromEntries(fd.entries());
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        contactMsg.textContent = data.message || "Erreur lors de l’envoi";
+        return;
+      }
+
+      contactMsg.textContent = "✅ Message envoyé avec succès";
+      contactForm.reset();
+    } catch (err) {
+      console.error(err);
+      contactMsg.textContent = "❌ Erreur serveur";
+    }
+  });
+}
