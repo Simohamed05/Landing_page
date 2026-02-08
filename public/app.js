@@ -1161,9 +1161,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (pack[key]) el.textContent = pack[key];
     });
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
-      const key = el.getAttribute("data-i18n-placeholder");
-      if (pack[key]) el.setAttribute("placeholder", pack[key]);
+      const k = el.getAttribute("data-i18n-placeholder");
+      if (dict[k]) el.setAttribute("placeholder", dict[k]);
     });
+
     document.querySelectorAll(".langToggle").forEach((btn) => {
       btn.textContent = lang === "fr" ? "EN" : "FR";
     });
