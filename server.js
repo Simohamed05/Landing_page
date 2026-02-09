@@ -7,6 +7,8 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendDemoAutoReply } from "./mailer.js";
+import nodemailer from "nodemailer";
+
 
 
 
@@ -28,6 +30,16 @@ function adminKey(req, res, next) {
   }
   next();
 }
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT || 587),
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -176,6 +188,113 @@ app.get("/api/admin/logins", adminKey, async (req, res) => {
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`✅ Server running: http://localhost:${PORT}`));
 
+// 1) Demander un code (email)
+app.post("/api/password/forgot", async (req, res) => {
+  const { email } = req.body || {};
+  if (!email) return res.status(400).json({ ok: false, message: "Email requis" });
+
+  // Toujours répondre ok (anti-enumeration), mais on envoie seulement si user existe
+  const [users] = await db.query("SELECT id, email FROM users WHERE email = ?", [email]);
+  if (!users.length) return res.json({ ok: true });
+
+  const code = String(Math.floor(100000 + Math.random() * 900000)); // 6 chiffres
+  const code_hash = await bcrypt.hash(code, 10);
+  const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+
+  await db.query(
+    "INSERT INTO password_resets (email, code_hash, expires_at) VALUES (?,?,?)",
+    [email, code_hash, expires.toISOString()]
+  );
+
+  // Envoi email
+  await transporter.sendMail({
+    from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+    to: email,
+    subject: "VentesPro — Code de réinitialisation",
+    text: `Votre code de vérification VentesPro est : ${code}\nIl expire dans 10 minutes.`,
+  });
+
+  res.json({ ok: true });
+});
+
+// 2) Vérifier le code
+app.post("/api/password/verify", async (req, res) => {
+  const { email, code } = req.body || {};
+  if (!email || !code) return res.status(400).json({ ok: false, message: "Email + code requis" });
+
+  const [rows] = await db.query(
+    `SELECT id, code_hash, expires_at, used_at
+     FROM password_resets
+     WHERE email = ?
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [email]
+  );
+
+  if (!rows.length) return res.status(400).json({ ok: false, message: "Code invalide" });
+
+  const r = rows[0];
+  if (r.used_at) return res.status(400).json({ ok: false, message: "Code déjà utilisé" });
+
+  const exp = new Date(r.expires_at);
+  if (Date.now() > exp.getTime()) return res.status(400).json({ ok: false, message: "Code expiré" });
+
+  const ok = await bcrypt.compare(String(code), r.code_hash);
+  if (!ok) return res.status(400).json({ ok: false, message: "Code invalide" });
+
+  // Crée un token reset (15 min) lié à cet email + resetId
+  const token = jwt.sign(
+    { purpose: "pwd_reset", email, resetId: r.id },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" }
+  );
+
+  res.json({ ok: true, token });
+});
+
+// 3) Changer le mot de passe
+app.post("/api/password/reset", async (req, res) => {
+  const { token, newPassword } = req.body || {};
+  if (!token || !newPassword) {
+    return res.status(400).json({ ok: false, message: "Token + nouveau mot de passe requis" });
+  }
+  if (String(newPassword).length < 6) {
+    return res.status(400).json({ ok: false, message: "Mot de passe trop court (min 6)" });
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    return res.status(401).json({ ok: false, message: "Token invalide/expiré" });
+  }
+
+  if (payload.purpose !== "pwd_reset") {
+    return res.status(401).json({ ok: false, message: "Token invalide" });
+  }
+
+  const { email, resetId } = payload;
+
+  // Vérifie reset toujours valide et non utilisé
+  const [rows] = await db.query(
+    "SELECT id, expires_at, used_at FROM password_resets WHERE id = ? AND email = ?",
+    [resetId, email]
+  );
+  if (!rows.length) return res.status(400).json({ ok: false, message: "Reset invalide" });
+
+  const r = rows[0];
+  if (r.used_at) return res.status(400).json({ ok: false, message: "Reset déjà utilisé" });
+
+  const exp = new Date(r.expires_at);
+  if (Date.now() > exp.getTime()) return res.status(400).json({ ok: false, message: "Reset expiré" });
+
+  const password_hash = await bcrypt.hash(newPassword, 12);
+
+  await db.query("UPDATE users SET password_hash = ? WHERE email = ?", [password_hash, email]);
+  await db.query("UPDATE password_resets SET used_at = NOW() WHERE id = ?", [resetId]);
+
+  res.json({ ok: true });
+});
 
 app.post("/api/demo", async (req, res) => {
   const { name, email, business, message } = req.body || {};

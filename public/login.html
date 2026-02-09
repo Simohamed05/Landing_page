@@ -118,6 +118,35 @@
           </p>
         </form>
       </div>
+      <button type="button" id="forgotBtn" class="link-like">
+  Mot de passe oublié ?
+</button>
+
+<div id="forgotBox" class="forgot-box" style="display:none;">
+  <!-- Step 1 -->
+  <div id="stepEmail">
+    <p>Entrez votre email, vous recevrez un code.</p>
+    <input id="fpEmail" type="email" placeholder="vous@exemple.com" />
+    <button type="button" id="sendCodeBtn" class="btn primary">Envoyer le code</button>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="stepCode" style="display:none;">
+    <p>Entrez le code reçu par email.</p>
+    <input id="fpCode" type="text" placeholder="123456" />
+    <button type="button" id="verifyCodeBtn" class="btn primary">Vérifier</button>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="stepReset" style="display:none;">
+    <p>Créer un nouveau mot de passe.</p>
+    <input id="fpNewPass" type="password" placeholder="Nouveau mot de passe" />
+    <button type="button" id="resetPassBtn" class="btn primary">Changer le mot de passe</button>
+  </div>
+
+  <p id="fpMsg" class="fine"></p>
+</div>
+
 
       <div class="reveal">
         <div class="mock card-tilt">
